@@ -1,33 +1,15 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { users } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const searchEngine = new TextSearchEngine<(typeof users)[number]>();
-// searchEngine.buildIndex(users, "name");
+type User = (typeof users)[number];
+
+const searchEngine = new TextSearchEngine<User>();
 searchEngine.buildIndex(users, "city");
 
 function SearchPage() {
   const [query, setQuery] = useState("");
-
-  const result = useMemo(() => {
-    const normalized = query.trim();
-
-    if (!normalized) {
-      return users;
-    }
-
-    // const byName = searchEngine.search("name", normalized);
-    const byCity = searchEngine.search("city", normalized);
-    // const unique = new Map<number, (typeof users)[number]>();
-
-    // for (const item of [...byName, ...byCity]) {
-    //   unique.set(item.id, item);
-    // }
-
-    // return [...unique.values()];
-    return byCity;
-  }, [query]);
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -38,16 +20,21 @@ function SearchPage() {
 
       <input
         value={query}
-        onChange={(event) => setQuery(event.target.value)}
+        onChange={(event) => {
+          const normalized = event.target.value.trim();
+          const byCity = searchEngine.search("city", normalized);
+          console.log("Search query:", byCity);
+          setQuery(event.target.value);
+        }}
         placeholder="Type name or city..."
         className="mt-4 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
       />
 
       <p className="mt-3 text-xs text-slate-500">
-        Showing {Math.min(result.length, 1000)} of {users.length} users
+        Showing {Math.min(query.length, 1000)} of {users.length} users
       </p>
 
-      <VirtualizedUserCards items={result} />
+      <VirtualizedUserCards items={users} />
     </section>
   );
 }
