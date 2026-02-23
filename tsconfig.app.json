@@ -15,6 +15,12 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@devisfuture/mega-collection/search": ["./src/mega/search.ts"],
+      "@devisfuture/mega-collection/filter": ["./src/mega/filter.ts"],
+      "@devisfuture/mega-collection/sort": ["./src/mega/sort.ts"]
+    },
 
     /* Linting */
     "strict": true,
