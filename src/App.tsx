@@ -57,13 +57,8 @@ function App() {
     }
 
     const titleMatches = engine.search("title", normalizedQuery);
-    const descriptionMatches = engine.search("description", normalizedQuery);
 
-    const matchedIds = new Set(
-      [...titleMatches, ...descriptionMatches].map((item) => item.id),
-    );
-
-    return cards.filter((item) => matchedIds.has(item.id));
+    return titleMatches;
   }, [query]);
 
   return (
