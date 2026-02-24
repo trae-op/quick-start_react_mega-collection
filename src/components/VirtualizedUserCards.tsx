@@ -68,7 +68,7 @@ function VirtualizedUserCards({
               rowHeight={ROW_HEIGHT}
               rowComponent={UserRow}
               rowProps={{ items: visibleItems }}
-              overscanCount={6}
+              overscanCount={1}
               style={{ height, width }}
             />
           );
