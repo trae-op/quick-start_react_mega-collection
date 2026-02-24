@@ -1,51 +1,162 @@
-# Security Policy
+# @devisfuture/mega-collection
 
-## Supported Versions
+> High-performance search, filter & sort engine for **10 M+** item collections in JavaScript / TypeScript.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
+Zero dependencies. Tree-shakeable. Import only what you need.
 
-## Reporting a Vulnerability
+## Features
 
-We take the security of `@devisfuture/mega-collection` seriously. If you believe you have found a security vulnerability, please report it to us as described below.
+| Capability                 | Strategy                               | Complexity                         |
+| -------------------------- | -------------------------------------- | ---------------------------------- |
+| **Indexed filter**         | Hash-Map index (`Map<value, T[]>`)     | **O(1)**                           |
+| **Multi-value filter**     | Index intersection + `Set` membership  | **O(k)** indexed / **O(n)** linear |
+| **Text search** (contains) | Trigram inverted index + verify        | **O(candidates)**                  |
+| **Sorting**                | Pre-sorted index (cached) / V8 TimSort | **O(n)** cached / **O(n log n)**   |
 
-**Please do NOT report security vulnerabilities through public GitHub issues.**
+## Install
 
-### How to Report
+```bash
+npm install @devisfuture/mega-collection
+```
 
-Send an email to **[devisfuture@gmail.com]** with the following information:
+## Quick Start
 
-1. **Description** of the vulnerability
-2. **Steps to reproduce** the issue (including code samples if possible)
-3. **Impact assessment** — what an attacker could achieve
-4. **Suggested fix** (if you have one)
+Import only the module you need — like `lodash`, each sub-module is fully independent:
 
-### What to Expect
+```ts
+interface User {
+  id: number;
+  name: string;
+  city: string;
+  age: number;
+}
+```
 
-- **Acknowledgement**: We will acknowledge your email within **48 hours**.
-- **Assessment**: We will investigate and provide an initial assessment within **5 business days**.
-- **Fix & Disclosure**: Once confirmed, we will work on a fix and coordinate disclosure with you.
+### Search only
 
-### Scope
+```ts
+import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 
-Since this is a pure computation library (no network, no file I/O, no eval), the most likely security concerns are:
+const search = new TextSearchEngine<User>();
+search.buildIndex(users, "name");
+search.search("name", "john");
+```
 
-- **Prototype pollution** — if user-supplied keys could modify `Object.prototype`
-- **ReDoS** (Regular Expression Denial of Service) — if regex is used on user input
-- **Excessive memory allocation** — if crafted input could cause OOM
+### Filter only
 
-We follow these principles:
+```ts
+import { FilterEngine } from "@devisfuture/mega-collection/filter";
 
-- No use of `eval()` or `Function()` constructors
-- No dynamic property access on prototypes
-- Input validation on public API boundaries
-- Strict TypeScript with no implicit `any`
+const filter = new FilterEngine<User>()
+  .buildIndex(users, "city")
+  .buildIndex(users, "age");
 
-## Disclosure Policy
+filter.filter(users, [
+  { field: "city", values: ["Kyiv", "Lviv"] },
+  { field: "age", values: [25, 30, 35] },
+]);
+```
 
-- We will credit reporters in the release notes (unless they prefer to stay anonymous).
-- We aim to release a patch within **7 days** of confirming a vulnerability.
-- We follow [responsible disclosure](https://en.wikipedia.org/wiki/Responsible_disclosure) practices.
+### Sort only
 
-Thank you for helping keep `@devisfuture/mega-collection` and its users safe!
+```ts
+import { SortEngine } from "@devisfuture/mega-collection/sort";
+
+// With index: first sort O(n log n), every repeat O(n)
+const sorter = new SortEngine<User>().buildIndex(users, "age");
+const sorted = sorter.sort(users, [{ field: "age", direction: "asc" }]);
+
+// Without index (multi-field): always O(n log n)
+const sorted2 = sorter.sort(users, [
+  { field: "age", direction: "asc" },
+  { field: "name", direction: "desc" },
+]);
+```
+
+## API Reference
+
+### `TextSearchEngine<T>` (search module)
+
+Trigram-based text search engine.
+
+| Method                    | Description                             |
+| ------------------------- | --------------------------------------- |
+| `buildIndex(data, field)` | Build trigram index for a field. O(n·L) |
+| `search(field, query)`    | Trigram-accelerated search              |
+| `hasIndex(field)`         | Check whether index exists              |
+| `clear()`                 | Free memory                             |
+
+### `FilterEngine<T>` (filter module)
+
+Multi-criteria AND filter with index-accelerated fast path.
+
+| Method                    | Description                           |
+| ------------------------- | ------------------------------------- |
+| `buildIndex(data, field)` | Build hash-map index for a field O(n) |
+| `filter(data, criteria)`  | Apply filter criteria                 |
+| `clearIndexes()`          | Free all index memory                 |
+
+### `SortEngine<T>` (sort module)
+
+High-performance sorting with pre-compiled comparators and cached sort indexes.
+
+| Method                              | Description                                 |
+| ----------------------------------- | ------------------------------------------- |
+| `buildIndex(data, field)`           | Pre-sort index for a field. O(n log n) once |
+| `sort(data, descriptors, inPlace?)` | Sort — O(n) with index, O(n log n) without  |
+| `clearIndexes()`                    | Free all cached indexes                     |
+
+## Types
+
+All types are exported from the main package and from each sub-module:
+
+```ts
+import type {
+  CollectionItem,
+  IndexableKey,
+} from "@devisfuture/mega-collection/search";
+import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
+import type {
+  SortDescriptor,
+  SortDirection,
+} from "@devisfuture/mega-collection/sort";
+```
+
+## Architecture
+
+```
+src/
+  types.ts               — Shared type definitions
+  indexer.ts              — Hash-Map index engine (internal, O(1) lookups)
+  search/
+    text-search.ts       — Trigram inverted index engine
+    index.ts             — Search module entry point
+  filter/
+    filter.ts            — Multi-criteria filter engine (owns Indexer internally)
+    index.ts             — Filter module entry point
+  sort/
+    sorter.ts            — Sort engine (TimSort + index-sort)
+    index.ts             — Sort module entry point
+  index.ts               — Barrel export
+```
+
+## Build
+
+```bash
+npm install
+npm run build          # Build CJS + ESM + declarations
+npm run typecheck      # Type-check without emitting
+npm run dev            # Watch mode
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for our security policy.
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.
