@@ -13,9 +13,16 @@ function SearchPage() {
   const [result, setResult] = useState<User[]>(users);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const normalized = event.target.value.trim();
-    const byCity = engine.search("city", normalized);
-    setQuery(event.target.value);
+    const raw = event.target.value;
+    const trimmed = raw.trim();
+    setQuery(raw);
+
+    if (!trimmed) {
+      setResult(users);
+      return;
+    }
+
+    const byCity = engine.search("city", raw);
     setResult(byCity);
   };
 
