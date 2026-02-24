@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { users } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
 type User = (typeof users)[number];
 
-const searchEngine = new TextSearchEngine<User>();
-searchEngine.buildIndex(users, "city");
-
 function SearchPage() {
+  const isEngine = useRef(true);
   const [query, setQuery] = useState("");
+  const [searchEngine, setSearchEngine] =
+    useState<TextSearchEngine<User> | null>(null);
+
+  useEffect(() => {
+    if (isEngine.current) {
+      isEngine.current = false;
+      const engine = new TextSearchEngine<User>();
+      engine.buildIndex(users, "city");
+      setSearchEngine(engine);
+      console.log("Search engine built with", users.length, "users");
+    }
+  }, []);
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -22,8 +32,10 @@ function SearchPage() {
         value={query}
         onChange={(event) => {
           const normalized = event.target.value.trim();
-          const byCity = searchEngine.search("city", normalized);
-          console.log("Search query:", byCity);
+          if (searchEngine) {
+            const byCity = searchEngine.search("city", normalized);
+            console.log("Search query:", byCity);
+          }
           setQuery(event.target.value);
         }}
         placeholder="Type name or city..."
