@@ -55,7 +55,7 @@ function VirtualizedUserCards({
   }
 
   return (
-    <div className="mt-4 h-[560px] rounded-lg border border-slate-200 bg-white p-2">
+    <div className="mt-4 h-[350px] rounded-lg border border-slate-200 bg-white p-2">
       <AutoSizer
         renderProp={({ height, width }) => {
           if (!height || !width) {
