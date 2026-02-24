@@ -20,7 +20,7 @@ const names = [
 
 const cities = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
 
-export const users: User[] = Array.from({ length: 1000 }, (_, index) => {
+export const users: User[] = Array.from({ length: 100000 }, (_, index) => {
   const id = index + 1;
   const name = `${names[index % names.length]} ${id}`;
   const city = cities[index % cities.length];
@@ -33,3 +33,5 @@ export const users: User[] = Array.from({ length: 1000 }, (_, index) => {
     age,
   };
 });
+
+export const defaultLimit = 10000;

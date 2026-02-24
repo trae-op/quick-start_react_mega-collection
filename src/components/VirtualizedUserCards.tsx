@@ -1,6 +1,6 @@
 import { List, type RowComponentProps } from "react-window";
 import { AutoSizer } from "react-virtualized-auto-sizer";
-import type { User } from "../data/users";
+import { defaultLimit, type User } from "../data/users";
 
 const ROW_HEIGHT = 84;
 
@@ -42,7 +42,7 @@ function UserRow({
 
 function VirtualizedUserCards({
   items,
-  limit = 1000,
+  limit = defaultLimit,
 }: VirtualizedUserCardsProps) {
   const visibleItems = items.slice(0, limit);
 
