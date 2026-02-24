@@ -34,4 +34,4 @@ export const users: User[] = Array.from({ length: 100000 }, (_, index) => {
   };
 });
 
-export const defaultLimit = 10000;
+export const defaultLimit = 100000;

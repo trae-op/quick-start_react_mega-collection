@@ -3,6 +3,10 @@ import { SortEngine } from "@devisfuture/mega-collection/sort";
 import { users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
+import ShowingCount from "../components/ShowingCount";
+
+import PageHeader from "../components/PageHeader";
+
 const engine = new SortEngine<User>();
 engine
   .buildIndex(users, "age")
@@ -22,10 +26,14 @@ function SortPage() {
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h1 className="text-xl font-semibold text-slate-900">Sort route</h1>
-      <p className="mt-1 text-sm text-slate-600">
-        Uses <strong>SortEngine</strong> for dynamic field sorting.
-      </p>
+      <PageHeader
+        title="Sort route"
+        description={
+          <>
+            Uses <strong>SortEngine</strong> for dynamic field sorting.
+          </>
+        }
+      />
 
       <div className="mt-4 flex flex-wrap gap-3">
         <select
@@ -52,9 +60,7 @@ function SortPage() {
         </select>
       </div>
 
-      <p className="mt-3 text-xs text-slate-500">
-        Showing {Math.min(result.length, 1000)} of {users.length} users
-      </p>
+      <ShowingCount count={result.length} itemName="users" />
 
       <VirtualizedUserCards items={result} />
     </section>

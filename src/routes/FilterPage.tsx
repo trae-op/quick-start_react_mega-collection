@@ -4,6 +4,10 @@ import { users } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
+import ShowingCount from "../components/ShowingCount";
+
+import PageHeader from "../components/PageHeader";
+
 const engine = new FilterEngine<User>();
 engine.buildIndex(users, "city").buildIndex(users, "age");
 
@@ -51,10 +55,14 @@ function FilterPage() {
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h1 className="text-xl font-semibold text-slate-900">Filter route</h1>
-      <p className="mt-1 text-sm text-slate-600">
-        Uses <strong>FilterEngine</strong> with indexed city/age criteria.
-      </p>
+      <PageHeader
+        title="Filter route"
+        description={
+          <>
+            Uses <strong>FilterEngine</strong> with indexed city/age criteria.
+          </>
+        }
+      />
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <div>
@@ -98,9 +106,7 @@ function FilterPage() {
         </div>
       </div>
 
-      <p className="mt-4 text-xs text-slate-500">
-        Showing {Math.min(result.length, 1000)} of {users.length} users
-      </p>
+      <ShowingCount count={result.length} itemName="users" />
 
       <VirtualizedUserCards items={result} />
     </section>
