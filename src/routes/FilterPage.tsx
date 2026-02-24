@@ -1,14 +1,12 @@
 import { useMemo, useState } from "react";
-import { FilterEngine, Indexer } from "@devisfuture/mega-collection/filter";
+import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import { users } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const indexer = new Indexer<(typeof users)[number]>();
-indexer.buildIndex(users, "city");
-indexer.buildIndex(users, "age");
+const filterEngine = new FilterEngine<User>();
+filterEngine.buildIndex(users, "city").buildIndex(users, "age");
 
-const filterEngine = new FilterEngine(indexer);
 const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
 const ageOptions = [22, 26, 30, 34, 38, 42];
 

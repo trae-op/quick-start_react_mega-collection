@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { SortEngine } from "@devisfuture/mega-collection/sort";
-import { users } from "../data/users";
+import { users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const sortEngine = new SortEngine<(typeof users)[number]>();
+const sortEngine = new SortEngine<User>();
 
 function SortPage() {
   const [field, setField] = useState<"name" | "city" | "age">("age");
