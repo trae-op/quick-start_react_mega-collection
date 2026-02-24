@@ -1,25 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { users } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
 type User = (typeof users)[number];
 
-function SearchPage() {
-  const isEngine = useRef(true);
-  const [query, setQuery] = useState("");
-  const [searchEngine, setSearchEngine] =
-    useState<TextSearchEngine<User> | null>(null);
+const engine = new TextSearchEngine<User>();
+engine.buildIndex(users, "city");
 
-  useEffect(() => {
-    if (isEngine.current) {
-      isEngine.current = false;
-      const engine = new TextSearchEngine<User>();
-      engine.buildIndex(users, "city");
-      setSearchEngine(engine);
-      console.log("Search engine built with", users.length, "users");
-    }
-  }, []);
+function SearchPage() {
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState<User[]>(users);
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const normalized = event.target.value.trim();
+    const byCity = engine.search("city", normalized);
+    setQuery(event.target.value);
+    setResult(byCity);
+  };
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -30,23 +28,16 @@ function SearchPage() {
 
       <input
         value={query}
-        onChange={(event) => {
-          const normalized = event.target.value.trim();
-          if (searchEngine) {
-            const byCity = searchEngine.search("city", normalized);
-            console.log("Search query:", byCity);
-          }
-          setQuery(event.target.value);
-        }}
+        onChange={handleSearch}
         placeholder="Type name or city..."
         className="mt-4 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
       />
 
       <p className="mt-3 text-xs text-slate-500">
-        Showing {Math.min(query.length, 1000)} of {users.length} users
+        Showing {Math.min(result.length, 1000)} of {users.length} users
       </p>
 
-      <VirtualizedUserCards items={users} />
+      <VirtualizedUserCards items={result} />
     </section>
   );
 }
