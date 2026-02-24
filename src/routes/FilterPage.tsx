@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useDeferredValue } from "react";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import { users } from "../data/users";
 import type { User } from "../data/users";
@@ -18,16 +18,21 @@ function FilterPage() {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
 
+  // Defer filter criteria so toggle buttons respond instantly while the
+  // engine.filter() call (even O(k) indexed) is scheduled as a low-priority update.
+  const deferredCities = useDeferredValue(selectedCities);
+  const deferredAges = useDeferredValue(selectedAges);
+
   const result = useMemo(() => {
     const criteria: Array<{ field: keyof User; values: User[keyof User][] }> =
       [];
 
-    if (selectedCities.length > 0) {
-      criteria.push({ field: "city", values: selectedCities });
+    if (deferredCities.length > 0) {
+      criteria.push({ field: "city", values: deferredCities });
     }
 
-    if (selectedAges.length > 0) {
-      criteria.push({ field: "age", values: selectedAges });
+    if (deferredAges.length > 0) {
+      criteria.push({ field: "age", values: deferredAges });
     }
 
     if (criteria.length === 0) {
@@ -35,7 +40,11 @@ function FilterPage() {
     }
 
     return engine.filter(users, criteria);
-  }, [selectedCities, selectedAges]);
+  }, [deferredCities, deferredAges]);
+
+  // True while React is computing the deferred filter result.
+  const isPending =
+    deferredCities !== selectedCities || deferredAges !== selectedAges;
 
   const toggleCity = (city: string) => {
     setSelectedCities((prev) =>
@@ -108,7 +117,9 @@ function FilterPage() {
 
       <ShowingCount count={result.length} itemName="users" />
 
-      <VirtualizedUserCards items={result} />
+      <div className={isPending ? "opacity-60 transition-opacity" : ""}>
+        <VirtualizedUserCards items={result} />
+      </div>
     </section>
   );
 }

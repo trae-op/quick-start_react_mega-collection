@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useDeferredValue } from "react";
 import { SortEngine } from "@devisfuture/mega-collection/sort";
 import { users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
@@ -17,12 +17,22 @@ function SortPage() {
   const [field, setField] = useState<"name" | "city" | "age">("age");
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
+  // useDeferredValue defers the sort computation to a low-priority render so
+  // the select controls update instantly even if sorting 100 k items takes a few ms.
+  const deferredField = useDeferredValue(field);
+  const deferredDirection = useDeferredValue(direction);
+
+  // Using a single-field descriptor here is critical: the engine's O(n) cached
+  // index path only activates when descriptors.length === 1.  Adding a secondary
+  // descriptor (e.g. { field: "id" }) forces an O(n log n) full sort every time.
   const result = useMemo(() => {
     return engine.sort(users, [
-      { field, direction },
-      { field: "id", direction: "asc" },
+      { field: deferredField, direction: deferredDirection },
     ]);
-  }, [field, direction]);
+  }, [deferredField, deferredDirection]);
+
+  // True while React is still computing the deferred sort.
+  const isPending = deferredField !== field || deferredDirection !== direction;
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -62,7 +72,9 @@ function SortPage() {
 
       <ShowingCount count={result.length} itemName="users" />
 
-      <VirtualizedUserCards items={result} />
+      <div className={isPending ? "opacity-60 transition-opacity" : ""}>
+        <VirtualizedUserCards items={result} />
+      </div>
     </section>
   );
 }
