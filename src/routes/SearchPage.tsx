@@ -23,13 +23,12 @@ function SearchPage() {
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <h1 className="text-xl font-semibold text-slate-900">Search route</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Uses <strong>TextSearchEngine</strong> to search by name and city.
+        Uses <strong>TextSearchEngine</strong> to searching.
       </p>
 
       <input
         value={query}
         onChange={handleSearch}
-        placeholder="Type name or city..."
         className="mt-4 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
       />
 
