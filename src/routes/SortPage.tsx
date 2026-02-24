@@ -3,7 +3,8 @@ import { SortEngine } from "@devisfuture/mega-collection/sort";
 import { users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const sortEngine = new SortEngine<User>()
+const engine = new SortEngine<User>();
+engine
   .buildIndex(users, "age")
   .buildIndex(users, "name")
   .buildIndex(users, "city");
@@ -13,7 +14,7 @@ function SortPage() {
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
   const result = useMemo(() => {
-    return sortEngine.sort(users, [
+    return engine.sort(users, [
       { field, direction },
       { field: "id", direction: "asc" },
     ]);

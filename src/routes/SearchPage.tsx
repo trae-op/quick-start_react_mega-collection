@@ -6,7 +6,7 @@ import VirtualizedUserCards from "../components/VirtualizedUserCards";
 type User = (typeof users)[number];
 
 const engine = new TextSearchEngine<User>();
-engine.buildIndex(users, "city");
+engine.buildIndex(users, "city").buildIndex(users, "name");
 
 function SearchPage() {
   const [query, setQuery] = useState("");
@@ -23,7 +23,8 @@ function SearchPage() {
     }
 
     const byCity = engine.search("city", trimmed);
-    setResult(byCity);
+    const byName = engine.search("name", trimmed);
+    setResult([...byCity, ...byName]);
   };
 
   return (

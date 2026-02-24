@@ -4,9 +4,8 @@ import { users } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const filterEngine = new FilterEngine<User>()
-  .buildIndex(users, "city")
-  .buildIndex(users, "age");
+const engine = new FilterEngine<User>();
+engine.buildIndex(users, "city").buildIndex(users, "age");
 
 const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
 const ageOptions = [22, 26, 30, 34, 38, 42];
@@ -31,7 +30,7 @@ function FilterPage() {
       return users;
     }
 
-    return filterEngine.filter(users, criteria);
+    return engine.filter(users, criteria);
   }, [selectedCities, selectedAges]);
 
   const toggleCity = (city: string) => {
