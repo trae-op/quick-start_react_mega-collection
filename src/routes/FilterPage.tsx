@@ -8,8 +8,10 @@ import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
 
-const engine = new FilterEngine<User>();
-engine.buildIndex(users, "city").buildIndex(users, "age");
+const engine = new FilterEngine<User>({
+  data: users,
+  fields: ["city", "age"],
+});
 
 const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
 const ageOptions = [22, 26, 30, 34, 38, 42];
@@ -77,40 +79,47 @@ function FilterPage() {
         <div>
           <p className="text-sm font-medium text-slate-800">Cities</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {cityOptions.map((city) => (
-              <button
-                key={city}
-                type="button"
-                onClick={() => toggleCity(city)}
-                className={`rounded-full border px-3 py-1 text-xs ${
-                  selectedCities.includes(city)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
-                }`}
-              >
-                {city}
-              </button>
-            ))}
+            {cityOptions.map((city) => {
+              const onClick = () => toggleCity(city);
+
+              return (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={onClick}
+                  className={`rounded-full border px-3 py-1 text-xs ${
+                    selectedCities.includes(city)
+                      ? "border-slate-700 bg-slate-700 text-white"
+                      : "border-slate-300 bg-white text-slate-700"
+                  }`}
+                >
+                  {city}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         <div>
           <p className="text-sm font-medium text-slate-800">Ages</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {ageOptions.map((age) => (
-              <button
-                key={age}
-                type="button"
-                onClick={() => toggleAge(age)}
-                className={`rounded-full border px-3 py-1 text-xs ${
-                  selectedAges.includes(age)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
-                }`}
-              >
-                {age}
-              </button>
-            ))}
+            {ageOptions.map((age) => {
+              const onClick = () => toggleAge(age);
+              return (
+                <button
+                  key={age}
+                  type="button"
+                  onClick={onClick}
+                  className={`rounded-full border px-3 py-1 text-xs ${
+                    selectedAges.includes(age)
+                      ? "border-slate-700 bg-slate-700 text-white"
+                      : "border-slate-300 bg-white text-slate-700"
+                  }`}
+                >
+                  {age}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

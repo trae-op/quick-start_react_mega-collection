@@ -11,8 +11,12 @@ type User = (typeof users)[number];
 
 // minQueryLength: 2 — prevents 1-gram posting list scans (~70-80 k candidates
 // for single chars like "a") that would block the main thread on 100 k items.
-const engine = new TextSearchEngine<User>({ minQueryLength: 2 });
-engine.buildIndex(users, "city").buildIndex(users, "name");
+// data + fields are passed upfront so no manual buildIndex calls are needed.
+const engine = new TextSearchEngine<User>({
+  data: users,
+  fields: ["city", "name"],
+  minQueryLength: 2,
+});
 
 /** Delay (ms) after the last keystroke before the search is executed. */
 const DEBOUNCE_MS = 150;
@@ -43,17 +47,8 @@ function SearchPage() {
             return;
           }
 
-          const byCity = engine.search("city", trimmed);
-          const byName = engine.search("name", trimmed);
-
-          // Deduplicate: a user matching both fields should appear only once.
-          const seenIds = new Set(byCity.map((u) => u.id));
-          const combined = [
-            ...byCity,
-            ...byName.filter((u) => !seenIds.has(u.id)),
-          ];
-
-          setResult(combined);
+          // search(query) searches all indexed fields and deduplicates internally.
+          setResult(engine.search(trimmed));
         });
       }, DEBOUNCE_MS);
     },

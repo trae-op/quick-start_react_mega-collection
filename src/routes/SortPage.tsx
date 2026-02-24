@@ -7,11 +7,10 @@ import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
 
-const engine = new SortEngine<User>();
-engine
-  .buildIndex(users, "age")
-  .buildIndex(users, "name")
-  .buildIndex(users, "city");
+const engine = new SortEngine<User>({
+  data: users,
+  fields: ["age", "name", "city"],
+});
 
 function SortPage() {
   const [field, setField] = useState<"name" | "city" | "age">("age");
@@ -34,6 +33,14 @@ function SortPage() {
   // True while React is still computing the deferred sort.
   const isPending = deferredField !== field || deferredDirection !== direction;
 
+  const onChangeField = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setField(event.target.value as "name" | "city" | "age");
+  };
+
+  const onChangeDirection = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setDirection(event.target.value as "asc" | "desc");
+  };
+
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
@@ -48,9 +55,7 @@ function SortPage() {
       <div className="mt-4 flex flex-wrap gap-3">
         <select
           value={field}
-          onChange={(event) =>
-            setField(event.target.value as "name" | "city" | "age")
-          }
+          onChange={onChangeField}
           className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
         >
           <option value="age">age</option>
@@ -60,9 +65,7 @@ function SortPage() {
 
         <select
           value={direction}
-          onChange={(event) =>
-            setDirection(event.target.value as "asc" | "desc")
-          }
+          onChange={onChangeDirection}
           className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
         >
           <option value="asc">asc</option>
