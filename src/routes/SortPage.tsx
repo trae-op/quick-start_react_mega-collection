@@ -3,7 +3,10 @@ import { SortEngine } from "@devisfuture/mega-collection/sort";
 import { users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const sortEngine = new SortEngine<User>();
+const sortEngine = new SortEngine<User>()
+  .buildIndex(users, "age")
+  .buildIndex(users, "name")
+  .buildIndex(users, "city");
 
 function SortPage() {
   const [field, setField] = useState<"name" | "city" | "age">("age");

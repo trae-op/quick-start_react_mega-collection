@@ -22,7 +22,7 @@ function SearchPage() {
       return;
     }
 
-    const byCity = engine.search("city", raw);
+    const byCity = engine.search("city", trimmed);
     setResult(byCity);
   };
 

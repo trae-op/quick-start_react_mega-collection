@@ -4,8 +4,9 @@ import { users } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
-const filterEngine = new FilterEngine<User>();
-filterEngine.buildIndex(users, "city").buildIndex(users, "age");
+const filterEngine = new FilterEngine<User>()
+  .buildIndex(users, "city")
+  .buildIndex(users, "age");
 
 const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
 const ageOptions = [22, 26, 30, 34, 38, 42];
