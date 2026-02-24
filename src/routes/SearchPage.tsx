@@ -23,6 +23,7 @@ function SearchPage() {
     }
 
     const byCity = engine.search("city", raw);
+    console.log("Search query:", raw, "Results:", byCity);
     setResult(byCity);
   };
 
