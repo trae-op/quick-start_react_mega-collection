@@ -36,7 +36,7 @@ export const users: User[] = Array.from(
     const id = index + 1;
     const name = `${names[index % names.length]} ${id}`;
     const city = cities[index % cities.length];
-    const age = 20 + (index % 26);
+    const age = ages[index % ages.length];
 
     return {
       id,
