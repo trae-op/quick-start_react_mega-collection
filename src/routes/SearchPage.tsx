@@ -1,4 +1,4 @@
-import { useState, useTransition, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { users } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
@@ -15,34 +15,22 @@ const engine = new TextSearchEngine<User>({
   minQueryLength: 2,
 });
 
-const DEBOUNCE_MS = 150;
-
 function SearchPage() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<User[]>(users);
-  const [isPending, startTransition] = useTransition();
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const raw = event.target.value;
-
+      const trimmed = raw.trim();
       setQuery(raw);
 
-      if (debounceRef.current !== null) clearTimeout(debounceRef.current);
+      if (!trimmed) {
+        setResult(users);
+        return;
+      }
 
-      debounceRef.current = setTimeout(() => {
-        const trimmed = raw.trim();
-
-        startTransition(() => {
-          if (!trimmed) {
-            setResult(users);
-            return;
-          }
-
-          setResult(engine.search(trimmed));
-        });
-      }, DEBOUNCE_MS);
+      setResult(engine.search(trimmed));
     },
     [],
   );
@@ -66,7 +54,7 @@ function SearchPage() {
 
       <ShowingCount count={result.length} itemName="users" />
 
-      <div className={isPending ? "opacity-60 transition-opacity" : ""}>
+      <div className="mt-4">
         <VirtualizedUserCards items={result} />
       </div>
     </section>
