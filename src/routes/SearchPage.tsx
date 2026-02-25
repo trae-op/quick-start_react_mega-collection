@@ -25,12 +25,7 @@ function SearchPage() {
       const trimmed = raw.trim();
       setQuery(raw);
 
-      if (!trimmed) {
-        setResult(users);
-        return;
-      }
-
-      setResult(engine.search(trimmed));
+      setResult(trimmed ? engine.search(trimmed) : users);
     },
     [],
   );

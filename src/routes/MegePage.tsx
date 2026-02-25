@@ -1,11 +1,4 @@
-import {
-  useState,
-  useMemo,
-  useRef,
-  useCallback,
-  useTransition,
-  useDeferredValue,
-} from "react";
+import { useState, useMemo, useCallback, useDeferredValue } from "react";
 import { MergeEngines } from "@devisfuture/mega-collection";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
@@ -28,13 +21,9 @@ const ageOptions = [22, 26, 30, 34, 38, 42] as const;
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
-const DEBOUNCE_MS = 150;
-
 function MegePage() {
   const [query, setQuery] = useState("");
   const [searchResult, setSearchResult] = useState<User[]>(users);
-  const [isSearchPending, startSearchTransition] = useTransition();
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
@@ -50,7 +39,7 @@ function MegePage() {
     deferredCities !== selectedCities || deferredAges !== selectedAges;
   const isSortPending =
     deferredSortField !== sortField || deferredSortDirection !== sortDirection;
-  const isPending = isSearchPending || isFilterPending || isSortPending;
+  const isPending = isFilterPending || isSortPending;
 
   const result = useMemo(() => {
     const criteria: Array<{ field: keyof User; values: User[keyof User][] }> =
@@ -84,14 +73,8 @@ function MegePage() {
       const raw = event.target.value;
       setQuery(raw);
 
-      if (debounceRef.current !== null) clearTimeout(debounceRef.current);
-
-      debounceRef.current = setTimeout(() => {
-        const trimmed = raw.trim();
-        startSearchTransition(() => {
-          setSearchResult(trimmed ? engine.search(trimmed) : users);
-        });
-      }, DEBOUNCE_MS);
+      const trimmed = raw.trim();
+      setSearchResult(trimmed ? engine.search(trimmed) : users);
     },
     [],
   );
@@ -216,7 +199,7 @@ function MegePage() {
 
       <ShowingCount count={result.length} itemName="users" />
 
-      <div className={isPending ? "opacity-60 transition-opacity" : ""}>
+      <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
       </div>
     </section>
