@@ -41,7 +41,7 @@ function FilterPage() {
       return users;
     }
 
-    return engine.filter(users, criteria);
+    return engine.filter(criteria);
   }, [deferredCities, deferredAges]);
 
   // True while React is computing the deferred filter result.

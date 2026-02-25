@@ -25,7 +25,7 @@ function SortPage() {
   // index path only activates when descriptors.length === 1.  Adding a secondary
   // descriptor (e.g. { field: "id" }) forces an O(n log n) full sort every time.
   const result = useMemo(() => {
-    return engine.sort(users, [
+    return engine.sort([
       { field: deferredField, direction: deferredDirection },
     ]);
   }, [deferredField, deferredDirection]);
