@@ -18,7 +18,15 @@ const names = [
   "Mia",
 ];
 
-const cities = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
+export const cities = [
+  "New York",
+  "Los Angeles",
+  "Chicago",
+  "Miami",
+  "San Francisco",
+];
+
+export const ages = [22, 26, 30, 34, 38, 42];
 
 export const defaultLimit = 50000;
 

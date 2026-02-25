@@ -1,6 +1,6 @@
 import { useMemo, useState, useDeferredValue } from "react";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
-import { users } from "../data/users";
+import { ages, cities, users } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
@@ -13,9 +13,6 @@ const engine = new FilterEngine<User>({
   fields: ["city", "age"],
   filterByPreviousResult: true,
 });
-
-const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
-const ageOptions = [22, 26, 30, 34, 38, 42];
 
 function FilterPage() {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -77,7 +74,7 @@ function FilterPage() {
         <div>
           <p className="text-sm font-medium text-slate-800">Cities</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {cityOptions.map((city) => {
+            {cities.map((city) => {
               const onClick = () => toggleCity(city);
 
               return (
@@ -101,7 +98,7 @@ function FilterPage() {
         <div>
           <p className="text-sm font-medium text-slate-800">Ages</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {ageOptions.map((age) => {
+            {ages.map((age) => {
               const onClick = () => toggleAge(age);
               return (
                 <button

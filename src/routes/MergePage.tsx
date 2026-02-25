@@ -3,7 +3,7 @@ import { MergeEngines } from "@devisfuture/mega-collection";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import { SortEngine } from "@devisfuture/mega-collection/sort";
-import { users, type User } from "../data/users";
+import { ages, cities, users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
@@ -16,8 +16,6 @@ const engine = new MergeEngines<User>({
   sort: { fields: ["age", "name", "city"] },
 });
 
-const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"] as const;
-const ageOptions = [22, 26, 30, 34, 38, 42] as const;
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
@@ -131,7 +129,7 @@ function MergePage() {
         <div>
           <p className="text-sm font-medium text-slate-800">Filter by city</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {cityOptions.map((city) => (
+            {cities.map((city) => (
               <button
                 key={city}
                 type="button"
@@ -151,7 +149,7 @@ function MergePage() {
         <div>
           <p className="text-sm font-medium text-slate-800">Filter by age</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {ageOptions.map((age) => (
+            {ages.map((age) => (
               <button
                 key={age}
                 type="button"
