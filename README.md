@@ -1,6 +1,6 @@
 # Demonstration of the @devisfuture/mega-collection package with React
 
-This project showcases for handling 50K+ item collections in React with minimal performance degradation. By combining the `@devisfuture/mega-collection` for data manipulation with `react-window` and `react-virtualized-auto-sizer` for efficient UI rendering with data-heavy.
+This project shows how to work with 50 000+ item collections in React. It uses `@devisfuture/mega-collection` for data operations and `react-window`/`react-virtualized-auto-sizer` to render long lists without slowing down the UI.
 
 ## Architecture
 
@@ -12,11 +12,11 @@ The `@devisfuture/mega-collection` package provides three engines:
 | -------------------- | ------------------------------ | -------------------------- | --------------------------------- |
 | **TextSearchEngine** | Trigram-based full-text search | O(candidates)              | Finding items by name/description |
 | **FilterEngine**     | Multi-criteria AND filtering   | O(k) indexed / O(n) linear | Narrowing results by attributes   |
-| **SortEngine**       | High-performance sorting       | O(n) cached / O(n log n)   | Ordering results by fields        |
+| **SortEngine**       | Sorting                        | O(n) cached / O(n log n)   | Ordering results by fields        |
 
 ### UI Rendering: Virtualization Libraries
 
-When rendering large collections, virtualization is essential:
+When rendering large collections, it helps to virtualize the list:
 
 | Library                          | Purpose                             | Benefit                                                                                |
 | -------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------- |
@@ -161,7 +161,7 @@ VirtualizedUserCards           → Render ~20 items
 
 **Location:** `src/components/VirtualizedUserCards.tsx`
 
-This component demonstrates why virtualization matters:
+This component shows how virtualization works:
 
 ```tsx
 import { List } from "react-window";
@@ -195,9 +195,9 @@ function VirtualizedUserCards({ items, limit = defaultLimit }) {
 
 **Performance Impact:**
 
-- Without virtualization: 50K DOM nodes = 50MB+ memory
-- With virtualization: ~15 DOM nodes = <1MB memory
-- Scroll performance: 60fps smooth scrolling
+- Without virtualization: rendering 50K items creates 50K DOM nodes and uses a lot of memory
+- With virtualization: only about 15 DOM nodes are in the DOM at any time
+- Scrolling stays responsive
 
 ## React Patterns Used
 
