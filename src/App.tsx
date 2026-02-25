@@ -1,5 +1,6 @@
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import FilterPage from "./routes/FilterPage";
+import MegePage from "./routes/MegePage";
 import SearchPage from "./routes/SearchPage";
 import SortPage from "./routes/SortPage";
 
@@ -7,6 +8,7 @@ const navItems = [
   { to: "/search", label: "Search" },
   { to: "/filter", label: "Filter" },
   { to: "/sort", label: "Sort" },
+  { to: "/merge", label: "MergeEngines" },
 ];
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/filter" element={<FilterPage />} />
           <Route path="/sort" element={<SortPage />} />
+          <Route path="/merge" element={<MegePage />} />
           <Route path="*" element={<Navigate to="/search" replace />} />
         </Routes>
       </div>
