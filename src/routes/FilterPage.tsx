@@ -11,6 +11,7 @@ import PageHeader from "../components/PageHeader";
 const engine = new FilterEngine<User>({
   data: users,
   fields: ["city", "age"],
+  filterByPreviousResult: true,
 });
 
 const cityOptions = ["Kyiv", "Lviv", "Odesa", "Kharkiv", "Dnipro"];
