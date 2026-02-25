@@ -124,7 +124,7 @@ function FilterPage() {
 
       <ShowingCount count={result.length} itemName="users" />
 
-      <div className={isPending ? "opacity-60 transition-opacity" : ""}>
+      <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
       </div>
     </section>
