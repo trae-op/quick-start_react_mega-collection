@@ -19,11 +19,10 @@ function SortPage() {
   const deferredField = useDeferredValue(field);
   const deferredDirection = useDeferredValue(direction);
 
-  const result = useMemo(() => {
-    return engine.sort([
-      { field: deferredField, direction: deferredDirection },
-    ]);
-  }, [deferredField, deferredDirection]);
+  const result = useMemo(
+    () => engine.sort([{ field: deferredField, direction: deferredDirection }]),
+    [deferredField, deferredDirection],
+  );
 
   const isPending = deferredField !== field || deferredDirection !== direction;
 
@@ -69,7 +68,7 @@ function SortPage() {
 
       <ShowingCount count={result.length} itemName="users" />
 
-      <div className={isPending ? "opacity-60 transition-opacity" : ""}>
+      <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
       </div>
     </section>
