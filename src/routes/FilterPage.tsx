@@ -21,8 +21,6 @@ function FilterPage() {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
 
-  // Defer filter criteria so toggle buttons respond instantly while the
-  // engine.filter() call (even O(k) indexed) is scheduled as a low-priority update.
   const deferredCities = useDeferredValue(selectedCities);
   const deferredAges = useDeferredValue(selectedAges);
 
@@ -45,7 +43,6 @@ function FilterPage() {
     return engine.filter(criteria);
   }, [deferredCities, deferredAges]);
 
-  // True while React is computing the deferred filter result.
   const isPending =
     deferredCities !== selectedCities || deferredAges !== selectedAges;
 

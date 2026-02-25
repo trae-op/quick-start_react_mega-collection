@@ -9,16 +9,12 @@ import PageHeader from "../components/PageHeader";
 
 type User = (typeof users)[number];
 
-// minQueryLength: 2 — prevents 1-gram posting list scans (~70-80 k candidates
-// for single chars like "a") that would block the main thread on 100 k items.
-// data + fields are passed upfront so no manual buildIndex calls are needed.
 const engine = new TextSearchEngine<User>({
   data: users,
   fields: ["city", "name"],
   minQueryLength: 2,
 });
 
-/** Delay (ms) after the last keystroke before the search is executed. */
 const DEBOUNCE_MS = 150;
 
 function SearchPage() {
@@ -30,24 +26,20 @@ function SearchPage() {
   const handleSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const raw = event.target.value;
-      // Update the controlled input immediately so typing feels snappy.
+
       setQuery(raw);
 
-      // Cancel any pending debounced search.
       if (debounceRef.current !== null) clearTimeout(debounceRef.current);
 
       debounceRef.current = setTimeout(() => {
         const trimmed = raw.trim();
 
-        // startTransition marks the result update as non-urgent — React won't
-        // block user input while it processes the state change.
         startTransition(() => {
           if (!trimmed) {
             setResult(users);
             return;
           }
 
-          // search(query) searches all indexed fields and deduplicates internally.
           setResult(engine.search(trimmed));
         });
       }, DEBOUNCE_MS);

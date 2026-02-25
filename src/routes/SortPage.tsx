@@ -16,21 +16,15 @@ function SortPage() {
   const [field, setField] = useState<"name" | "city" | "age">("age");
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
-  // useDeferredValue defers the sort computation to a low-priority render so
-  // the select controls update instantly even if sorting 100 k items takes a few ms.
   const deferredField = useDeferredValue(field);
   const deferredDirection = useDeferredValue(direction);
 
-  // Using a single-field descriptor here is critical: the engine's O(n) cached
-  // index path only activates when descriptors.length === 1.  Adding a secondary
-  // descriptor (e.g. { field: "id" }) forces an O(n log n) full sort every time.
   const result = useMemo(() => {
     return engine.sort([
       { field: deferredField, direction: deferredDirection },
     ]);
   }, [deferredField, deferredDirection]);
 
-  // True while React is still computing the deferred sort.
   const isPending = deferredField !== field || deferredDirection !== direction;
 
   const onChangeField = (event: React.ChangeEvent<HTMLSelectElement>) => {
