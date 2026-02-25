@@ -23,7 +23,7 @@ const engine = new MergeEngines<User>({
   imports: [TextSearchEngine, SortEngine, FilterEngine],
   data: users,
   search: { fields: ["name", "city"], minQueryLength: 2 },
-  filter: { fields: ["city", "age"] },
+  filter: { fields: ["city", "age"], filterByPreviousResult: true },
   sort: { fields: ["age", "name", "city"] },
 });
 
