@@ -33,7 +33,7 @@ function SearchPage() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
-        title="Search route"
+        title="Search"
         description={
           <>
             Uses <strong>TextSearchEngine</strong> to searching.

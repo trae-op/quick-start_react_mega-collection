@@ -37,10 +37,10 @@ function SortPage() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
-        title="Sort route"
+        title="Sort"
         description={
           <>
-            Uses <strong>SortEngine</strong> for dynamic field sorting.
+            Uses <strong>SortEngine</strong> for dynamic sorting.
           </>
         }
       />

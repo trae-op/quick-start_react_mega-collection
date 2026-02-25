@@ -65,7 +65,7 @@ function FilterPage() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
-        title="Filter route"
+        title="Filter"
         description={
           <>
             Uses <strong>FilterEngine</strong> with indexed city/age criteria.

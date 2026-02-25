@@ -21,7 +21,7 @@ const ageOptions = [22, 26, 30, 34, 38, 42] as const;
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
-function MegePage() {
+function MergePage() {
   const [query, setQuery] = useState("");
   const [searchResult, setSearchResult] = useState<User[]>(users);
 
@@ -104,13 +104,13 @@ function MegePage() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
-        title="MergeEngines route"
+        title="Merge"
         description={
           <>
             Combines <strong>TextSearchEngine</strong>,{" "}
             <strong>FilterEngine</strong>, and <strong>SortEngine</strong>{" "}
             through a single <strong>MergeEngines</strong> facade. The pipeline
-            runs <em>search → filter → sort</em> on 100k users.
+            runs <em>search → filter → sort</em> on 50k users.
           </>
         }
       />
@@ -206,4 +206,4 @@ function MegePage() {
   );
 }
 
-export default MegePage;
+export default MergePage;
