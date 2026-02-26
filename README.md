@@ -6,7 +6,7 @@ This project shows how to work with 100K+ item collections in React. It uses `@d
 
 ### React demo
 
-A live build of the React app is available at demo, showcasing how the package works in a real application.
+A live build of the React app is available at [demo](https://trae-op.github.io/quick-start_react_mega-collection/), showcasing how the package works in a real application.
 
 ### Data Manipulation: @devisfuture/mega-collection
 
