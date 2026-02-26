@@ -1,6 +1,6 @@
 # Demonstration of the @devisfuture/mega-collection package with React
 
-This project shows how to work with 50 000+ item collections in React. It uses `@devisfuture/mega-collection` for data operations and `react-window`/`react-virtualized-auto-sizer` to render long lists without slowing down the UI.
+This project shows how to work with 100K+ item collections in React. It uses `@devisfuture/mega-collection` for data operations and `react-window`/`react-virtualized-auto-sizer` to render long lists without slowing down the UI.
 
 ## Architecture
 
@@ -18,12 +18,12 @@ The `@devisfuture/mega-collection` package provides three engines:
 
 When rendering large collections, it helps to virtualize the list:
 
-| Library                          | Purpose                             | Benefit                                                                                |
-| -------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------- |
-| **react-window**                 | Efficiently renders large lists     | Only renders ~10-15 visible items instead of 50K+, reducing DOM nodes and memory usage |
-| **react-virtualized-auto-sizer** | Dynamically measures container size | Automatically adjusts virtualized list dimensions as window resizes                    |
+| Library                          | Purpose                             | Benefit                                                                                 |
+| -------------------------------- | ----------------------------------- | --------------------------------------------------------------------------------------- |
+| **react-window**                 | Efficiently renders large lists     | Only renders ~10-15 visible items instead of 100K+, reducing DOM nodes and memory usage |
+| **react-virtualized-auto-sizer** | Dynamically measures container size | Automatically adjusts virtualized list dimensions as window resizes                     |
 
-**Without virtualization:** Rendering 50K items = 50K DOM nodes = massive memory usage & slow interactions
+**Without virtualization:** Rendering 100K+ items = 100K+ DOM nodes = massive memory usage & slow interactions
 **With virtualization:** Only ~20 DOM nodes visible at any time = smooth scrolling & instant interactions
 
 ## Project Structure
@@ -31,7 +31,7 @@ When rendering large collections, it helps to virtualize the list:
 ```
 src/
   data/
-    users.ts                    — 50K+ user dataset
+    users.ts                    — 100K+ user dataset
   components/
     VirtualizedUserCards.tsx    — Virtualized list component (react-window)
     PageHeader.tsx              — Section headers
@@ -69,7 +69,7 @@ const engine = new TextSearchEngine<User>({
 
 **Performance:**
 
-- Search time: O(candidates) — typically <5ms for 50K items
+- Search time: O(candidates) — typically <5ms for 100K items
 - Supports instant-as-you-type UX with `useCallback`
 
 ### 2. FilterPage.tsx — Multi-Criteria Filtering
@@ -195,7 +195,7 @@ function VirtualizedUserCards({ items, limit = defaultLimit }) {
 
 **Performance Impact:**
 
-- Without virtualization: rendering 50K items creates 50K DOM nodes and uses a lot of memory
+- Without virtualization: rendering 100K items creates 100K DOM nodes and uses a lot of memory
 - With virtualization: only about 15 DOM nodes are in the DOM at any time
 - Scrolling stays responsive
 
