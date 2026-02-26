@@ -4,6 +4,10 @@ This project shows how to work with 100K+ item collections in React. It uses `@d
 
 ## Architecture
 
+### React demo
+
+A live build of the React app is available at demo, showcasing how the package works in a real application.
+
 ### Data Manipulation: @devisfuture/mega-collection
 
 The `@devisfuture/mega-collection` package provides three engines:
