@@ -3,7 +3,7 @@ import { MergeEngines } from "@devisfuture/mega-collection";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import { SortEngine } from "@devisfuture/mega-collection/sort";
-import { ages, cities, users, type User } from "../data/users";
+import { ages, cities, defaultLimit, users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
@@ -108,7 +108,7 @@ function MergePage() {
             Combines <strong>TextSearchEngine</strong>,{" "}
             <strong>FilterEngine</strong>, and <strong>SortEngine</strong>{" "}
             through a single <strong>MergeEngines</strong> facade. The pipeline
-            runs <em>search → filter → sort</em> on 50k users.
+            runs <em>search → filter → sort</em> on {defaultLimit} users.
           </>
         }
       />
