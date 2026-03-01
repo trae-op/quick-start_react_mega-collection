@@ -72,7 +72,7 @@ function MergePage() {
       setQuery(raw);
 
       const trimmed = raw.trim();
-      setSearchResult(trimmed ? engine.search(trimmed) : users);
+      setSearchResult(engine.search(trimmed));
     },
     [],
   );
