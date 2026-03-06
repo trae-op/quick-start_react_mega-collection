@@ -1,14 +1,20 @@
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import FilterPage from "./routes/FilterPage";
+import FilterNestedPage from "./routes/FilterNestedPage";
 import MergePage from "./routes/MergePage";
+import MergeNestedPage from "./routes/MergeNestedPage";
 import SearchPage from "./routes/SearchPage";
+import SearchNestedPage from "./routes/SearchNestedPage";
 import SortPage from "./routes/SortPage";
 
 const navItems = [
   { to: "/search", label: "Search" },
+  { to: "/search-nested", label: "Search Nested" },
   { to: "/filter", label: "Filter" },
+  { to: "/filter-nested", label: "Filter Nested" },
   { to: "/sort", label: "Sort" },
   { to: "/merge", label: "Merge" },
+  { to: "/merge-nested", label: "Merge Nested" },
 ];
 
 function App() {
@@ -35,9 +41,12 @@ function App() {
 
         <Routes>
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/search-nested" element={<SearchNestedPage />} />
           <Route path="/filter" element={<FilterPage />} />
+          <Route path="/filter-nested" element={<FilterNestedPage />} />
           <Route path="/sort" element={<SortPage />} />
           <Route path="/merge" element={<MergePage />} />
+          <Route path="/merge-nested" element={<MergeNestedPage />} />
           <Route path="*" element={<Navigate to="/search" replace />} />
         </Routes>
       </div>
