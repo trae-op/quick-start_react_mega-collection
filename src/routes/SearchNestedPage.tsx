@@ -7,7 +7,8 @@ import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards
 
 const engine = new TextSearchEngine<UserWithOrders>({
   data: nestedUsers,
-  fields: ["name", "city", "orders.status"],
+  fields: ["name", "city"],
+  nestedFields: ["orders.status"],
   minQueryLength: 2,
 });
 

@@ -18,9 +18,14 @@ import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards
 const engine = new MergeEngines<UserWithOrders>({
   imports: [TextSearchEngine, FilterEngine, SortEngine],
   data: nestedUsers,
-  search: { fields: ["name", "city", "orders.status"], minQueryLength: 2 },
+  search: {
+    fields: ["name", "city"],
+    minQueryLength: 2,
+    nestedFields: ["orders.status"],
+  },
   filter: {
-    fields: ["city", "age", "orders.status"],
+    fields: ["city", "age"],
+    nestedFields: ["orders.status"],
     filterByPreviousResult: true,
   },
   sort: { fields: ["age", "name", "city"] },
@@ -64,12 +69,14 @@ function MergeNestedPage() {
 
     const filtered =
       criteria.length > 0
-        ? engine.filter(searchResult, criteria)
+        ? Array.from(engine.filter(searchResult, criteria))
         : searchResult;
 
-    return engine.sort(filtered, [
-      { field: deferredSortField, direction: deferredSortDirection },
-    ]);
+    return Array.from(
+      engine.sort(filtered, [
+        { field: deferredSortField, direction: deferredSortDirection },
+      ]),
+    );
   }, [
     searchResult,
     deferredCities,
@@ -83,7 +90,7 @@ function MergeNestedPage() {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const raw = event.target.value;
       setQuery(raw);
-      setSearchResult(engine.search(raw.trim()));
+      setSearchResult(Array.from(engine.search(raw.trim())));
     },
     [],
   );

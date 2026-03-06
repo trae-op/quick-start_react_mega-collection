@@ -52,12 +52,14 @@ function MergePage() {
 
     const filtered =
       criteria.length > 0
-        ? engine.filter(searchResult, criteria)
+        ? Array.from(engine.filter(searchResult, criteria))
         : searchResult;
 
-    return engine.sort(filtered, [
-      { field: deferredSortField, direction: deferredSortDirection },
-    ]);
+    return Array.from(
+      engine.sort(filtered, [
+        { field: deferredSortField, direction: deferredSortDirection },
+      ]),
+    );
   }, [
     searchResult,
     deferredCities,
@@ -72,7 +74,7 @@ function MergePage() {
       setQuery(raw);
 
       const trimmed = raw.trim();
-      setSearchResult(engine.search(trimmed));
+      setSearchResult(Array.from(engine.search(trimmed)));
     },
     [],
   );

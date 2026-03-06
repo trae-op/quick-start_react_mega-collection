@@ -14,7 +14,8 @@ import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards
 
 const engine = new FilterEngine<UserWithOrders>({
   data: nestedUsers,
-  fields: ["city", "age", "orders.status"],
+  fields: ["city", "age"],
+  nestedFields: ["orders.status"],
   filterByPreviousResult: true,
 });
 
