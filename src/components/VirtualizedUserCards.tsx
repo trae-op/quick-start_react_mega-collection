@@ -2,7 +2,7 @@ import { List, type RowComponentProps } from "react-window";
 import { AutoSizer } from "react-virtualized-auto-sizer";
 import { defaultLimit, type User } from "../data/users";
 
-const ROW_HEIGHT = 84;
+const ROW_HEIGHT = 73;
 
 type UserRowProps = {
   items: User[];
