@@ -1,25 +1,19 @@
 import { useDeferredValue, useMemo, useState } from "react";
-import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
 import {
   ages,
   cities,
-  nestedUsers,
   orderStatuses,
   type UserWithOrders,
 } from "../data/users";
 import PageHeader from "../components/PageHeader";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
-
-const engine = new FilterEngine<UserWithOrders>({
-  data: nestedUsers,
-  fields: ["city", "age"],
-  nestedFields: ["orders.status"],
-  filterByPreviousResult: true,
-});
+import { useDemoData, useDemoEngine } from "../modules/demo-modules";
 
 function FilterNestedPage() {
+  const engine = useDemoEngine("filterNested");
+  const nestedUsers = useDemoData("nestedUsers");
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);

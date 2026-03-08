@@ -1,21 +1,16 @@
 import { useMemo, useState, useDeferredValue } from "react";
-import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { ages, cities, users } from "../data/users";
+import { ages, cities } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
-
-const engine = new FilterEngine<User>({
-  data: users,
-  fields: ["city", "age"],
-  filterByPreviousResult: true,
-});
+import { useDemoEngine } from "../modules/demo-modules";
 
 function FilterPage() {
+  const engine = useDemoEngine("filter");
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
 

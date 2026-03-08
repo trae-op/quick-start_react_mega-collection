@@ -1,20 +1,13 @@
 import { useDeferredValue, useMemo, useState, type ChangeEvent } from "react";
-import { TextSearchEngine } from "@devisfuture/mega-collection/search";
-import { nestedUsers, type UserWithOrders } from "../data/users";
 import PageHeader from "../components/PageHeader";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
+import { useDemoEngine } from "../modules/demo-modules";
 
 type SearchField = "all" | "name" | "city" | "orders.status";
 
-const engine = new TextSearchEngine<UserWithOrders>({
-  data: nestedUsers,
-  fields: ["name", "city"],
-  nestedFields: ["orders.status"],
-  minQueryLength: 2,
-});
-
 function SearchNestedPage() {
+  const engine = useDemoEngine("searchNested");
   const [query, setQuery] = useState("");
   const [searchField, setSearchField] = useState<SearchField>("all");
   const deferredQuery = useDeferredValue(query);

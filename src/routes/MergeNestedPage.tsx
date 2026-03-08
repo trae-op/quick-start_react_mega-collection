@@ -1,40 +1,21 @@
 import { useDeferredValue, useMemo, useState, type ChangeEvent } from "react";
-import { MergeEngines } from "@devisfuture/mega-collection";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { TextSearchEngine } from "@devisfuture/mega-collection/search";
-import { FilterEngine } from "@devisfuture/mega-collection/filter";
-import { SortEngine } from "@devisfuture/mega-collection/sort";
 import {
   ages,
   cities,
-  nestedUsers,
   orderStatuses,
   type UserWithOrders,
 } from "../data/users";
 import PageHeader from "../components/PageHeader";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
-
-const engine = new MergeEngines<UserWithOrders>({
-  imports: [TextSearchEngine, FilterEngine, SortEngine],
-  data: nestedUsers,
-  search: {
-    fields: ["name", "city"],
-    minQueryLength: 2,
-    nestedFields: ["orders.status"],
-  },
-  filter: {
-    fields: ["city", "age"],
-    nestedFields: ["orders.status"],
-    filterByPreviousResult: true,
-  },
-  sort: { fields: ["age", "name", "city"] },
-});
+import { useDemoEngine } from "../modules/demo-modules";
 
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
 function MergeNestedPage() {
+  const engine = useDemoEngine("mergeNested");
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
 

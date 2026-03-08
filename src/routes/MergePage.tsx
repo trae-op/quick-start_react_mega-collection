@@ -1,26 +1,16 @@
 import { useDeferredValue, useMemo, useState } from "react";
-import { MergeEngines } from "@devisfuture/mega-collection";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { TextSearchEngine } from "@devisfuture/mega-collection/search";
-import { FilterEngine } from "@devisfuture/mega-collection/filter";
-import { SortEngine } from "@devisfuture/mega-collection/sort";
-import { ages, cities, defaultLimit, users, type User } from "../data/users";
+import { ages, cities, defaultLimit, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
-
-const engine = new MergeEngines<User>({
-  imports: [TextSearchEngine, SortEngine, FilterEngine],
-  data: users,
-  search: { fields: ["name", "city"], minQueryLength: 2 },
-  filter: { fields: ["city", "age"], filterByPreviousResult: true },
-  sort: { fields: ["age", "name", "city"] },
-});
+import { useDemoEngine } from "../modules/demo-modules";
 
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
 function MergePage() {
+  const engine = useDemoEngine("merge");
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
 

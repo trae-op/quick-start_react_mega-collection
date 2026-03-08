@@ -1,22 +1,15 @@
 import { useDeferredValue, useMemo, useState, type ChangeEvent } from "react";
-import { TextSearchEngine } from "@devisfuture/mega-collection/search";
-import { users } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
+import { useDemoEngine } from "../modules/demo-modules";
 
-type User = (typeof users)[number];
 type SearchField = "all" | "name" | "city";
 
-const engine = new TextSearchEngine<User>({
-  data: users,
-  fields: ["city", "name"],
-  minQueryLength: 2,
-});
-
 function SearchPage() {
+  const engine = useDemoEngine("search");
   const [query, setQuery] = useState("");
   const [searchField, setSearchField] = useState<SearchField>("all");
   const deferredQuery = useDeferredValue(query);

@@ -41,46 +41,90 @@ export const orderStatuses: OrderStatus[] = ["pending", "delivered"];
 
 export const defaultLimit = 100000;
 
-export const users: User[] = Array.from(
-  { length: defaultLimit },
-  (_, index) => {
-    const id = index + 1;
-    const name = `${names[index % names.length]} ${id}`;
-    const city = cities[index % cities.length];
-    const age = ages[index % ages.length];
+const DEFAULT_CHUNK_SIZE = 5000;
 
-    return {
-      id,
-      name,
-      city,
-      age,
-    };
-  },
-);
+type BuildProgress = {
+  processed: number;
+  total: number;
+};
 
-export const nestedUsers: UserWithOrders[] = users.map((user, index) => {
-  // distribute order configurations:
-  // 0 -> no orders
-  // 1 -> single "pending"
-  // 2 -> single "delivered"
-  // 3 -> two orders, one of each status
-  const mode = index % 4;
-  // typed as the same shape as the `orders` property on the user type
-  let orders: UserWithOrders["orders"] = [];
+type BuildOptions = {
+  chunkSize?: number;
+  onProgress?: (progress: BuildProgress) => void;
+};
 
-  if (mode === 1) {
-    orders = [{ id: `${user.id}-1`, status: "pending" }];
-  } else if (mode === 2) {
-    orders = [{ id: `${user.id}-1`, status: "delivered" }];
-  } else if (mode === 3) {
-    orders = [
-      { id: `${user.id}-1`, status: "pending" },
-      { id: `${user.id}-2`, status: "delivered" },
-    ];
+const pauseForMainThread = () =>
+  new Promise<void>((resolve) => {
+    window.setTimeout(resolve, 0);
+  });
+
+export async function createUsers({
+  chunkSize = DEFAULT_CHUNK_SIZE,
+  onProgress,
+}: BuildOptions = {}): Promise<User[]> {
+  const result = new Array<User>(defaultLimit);
+
+  for (let start = 0; start < defaultLimit; start += chunkSize) {
+    const end = Math.min(start + chunkSize, defaultLimit);
+
+    for (let index = start; index < end; index += 1) {
+      const id = index + 1;
+
+      result[index] = {
+        id,
+        name: `${names[index % names.length]} ${id}`,
+        city: cities[index % cities.length],
+        age: ages[index % ages.length],
+      };
+    }
+
+    onProgress?.({ processed: end, total: defaultLimit });
+
+    if (end < defaultLimit) {
+      await pauseForMainThread();
+    }
   }
 
-  return {
-    ...user,
-    orders,
-  };
-});
+  return result;
+}
+
+export async function createNestedUsers(
+  users: User[],
+  { chunkSize = DEFAULT_CHUNK_SIZE, onProgress }: BuildOptions = {},
+): Promise<UserWithOrders[]> {
+  const result = new Array<UserWithOrders>(users.length);
+
+  for (let start = 0; start < users.length; start += chunkSize) {
+    const end = Math.min(start + chunkSize, users.length);
+
+    for (let index = start; index < end; index += 1) {
+      const user = users[index];
+      const mode = index % 4;
+      let orders: UserWithOrders["orders"] = [];
+
+      if (mode === 1) {
+        orders = [{ id: `${user.id}-1`, status: "pending" }];
+      } else if (mode === 2) {
+        orders = [{ id: `${user.id}-1`, status: "delivered" }];
+      } else if (mode === 3) {
+        orders = [
+          { id: `${user.id}-1`, status: "pending" },
+          { id: `${user.id}-2`, status: "delivered" },
+        ];
+      }
+
+      result[index] = {
+        ...user,
+        orders,
+      };
+    }
+
+    onProgress?.({ processed: end, total: users.length });
+
+    if (end < users.length) {
+      await pauseForMainThread();
+    }
+  }
+
+  return result;
+}
