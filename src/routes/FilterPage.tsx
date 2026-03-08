@@ -1,5 +1,6 @@
 import { useMemo, useState, useDeferredValue } from "react";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
+import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
 import { ages, cities, users } from "../data/users";
 import type { User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
@@ -22,8 +23,7 @@ function FilterPage() {
   const deferredAges = useDeferredValue(selectedAges);
 
   const result = useMemo(() => {
-    const criteria: Array<{ field: keyof User; values: User[keyof User][] }> =
-      [];
+    const criteria: FilterCriterion<User>[] = [];
 
     if (deferredCities.length > 0) {
       criteria.push({ field: "city", values: deferredCities });
@@ -31,10 +31,6 @@ function FilterPage() {
 
     if (deferredAges.length > 0) {
       criteria.push({ field: "age", values: deferredAges });
-    }
-
-    if (criteria.length === 0) {
-      return users;
     }
 
     return engine.filter(criteria);
@@ -59,16 +55,34 @@ function FilterPage() {
     );
   };
 
+  const resetFilters = () => {
+    setSelectedCities([]);
+    setSelectedAges([]);
+  };
+
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
         title="Filter"
         description={
           <>
-            Uses <strong>FilterEngine</strong> with indexed city/age criteria.
+            Uses <strong>FilterEngine</strong> with stored data,
+            <code>fields</code>
+            for <code>city</code> and <code>age</code>, plus
+            <code>filter(criteria)</code> over the engine memory.
           </>
         }
       />
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={resetFilters}
+          className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+        >
+          Reset filters
+        </button>
+      </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <div>

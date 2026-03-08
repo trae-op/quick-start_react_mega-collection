@@ -79,17 +79,33 @@ function FilterNestedPage() {
     );
   };
 
+  const resetFilters = () => {
+    setSelectedCities([]);
+    setSelectedAges([]);
+    setSelectedStatuses([]);
+  };
+
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
         title="Filter Nested"
         description={
           <>
-            Uses <strong>FilterEngine</strong> with top-level and nested
-            criteria including <code>orders.status</code>.
+            Uses <strong>FilterEngine</strong> with indexed top-level fields and
+            nested criteria through <code>orders.status</code>.
           </>
         }
       />
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={resetFilters}
+          className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+        >
+          Reset filters
+        </button>
+      </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div>

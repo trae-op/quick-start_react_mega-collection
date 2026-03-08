@@ -40,7 +40,8 @@ function SortPage() {
         title="Sort"
         description={
           <>
-            Uses <strong>SortEngine</strong> for dynamic sorting.
+            Uses <strong>SortEngine</strong> with prepared indexes for
+            single-field sorting over the stored 100K dataset.
           </>
         }
       />

@@ -1,4 +1,4 @@
-import { useCallback, useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState, type ChangeEvent } from "react";
 import { MergeEngines } from "@devisfuture/mega-collection";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
@@ -36,8 +36,7 @@ type SortDirection = "asc" | "desc";
 
 function MergeNestedPage() {
   const [query, setQuery] = useState("");
-  const [searchResult, setSearchResult] =
-    useState<UserWithOrders[]>(nestedUsers);
+  const deferredQuery = useDeferredValue(query);
 
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
@@ -54,6 +53,7 @@ function MergeNestedPage() {
 
   const result = useMemo(() => {
     const criteria: FilterCriterion<UserWithOrders>[] = [];
+    const trimmedQuery = deferredQuery.trim();
 
     if (deferredCities.length > 0) {
       criteria.push({ field: "city", values: deferredCities });
@@ -67,18 +67,12 @@ function MergeNestedPage() {
       criteria.push({ field: "orders.status", values: deferredStatuses });
     }
 
-    const filtered =
-      criteria.length > 0
-        ? Array.from(engine.filter(searchResult, criteria))
-        : searchResult;
-
-    return Array.from(
-      engine.sort(filtered, [
-        { field: deferredSortField, direction: deferredSortDirection },
-      ]),
-    );
+    return engine
+      .search(trimmedQuery)
+      .filter(criteria)
+      .sort([{ field: deferredSortField, direction: deferredSortDirection }]);
   }, [
-    searchResult,
+    deferredQuery,
     deferredCities,
     deferredAges,
     deferredStatuses,
@@ -86,21 +80,26 @@ function MergeNestedPage() {
     deferredSortDirection,
   ]);
 
-  const handleSearch = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = event.target.value;
-      setQuery(raw);
-      setSearchResult(Array.from(engine.search(raw.trim())));
-    },
-    [],
-  );
-
   const isPending =
+    deferredQuery !== query ||
     deferredCities !== selectedCities ||
     deferredAges !== selectedAges ||
     deferredStatuses !== selectedStatuses ||
     deferredSortField !== sortField ||
     deferredSortDirection !== sortDirection;
+
+  const searchQuery = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const resetPipeline = () => {
+    setQuery("");
+    setSelectedCities([]);
+    setSelectedAges([]);
+    setSelectedStatuses([]);
+    setSortField("age");
+    setSortDirection("asc");
+  };
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -109,9 +108,10 @@ function MergeNestedPage() {
         description={
           <>
             Combines nested <strong>search</strong>, <strong>filter</strong>,
-            and
-            <strong> sort</strong> with dot-path support for
-            <code>orders.status</code>.
+            and <strong>sort</strong> with dot-path support for
+            <code>orders.status</code> through chained
+            <code> MergeEngines </code>
+            calls.
           </>
         }
       />
@@ -120,7 +120,7 @@ function MergeNestedPage() {
         <p className="text-sm font-medium text-slate-800">Search</p>
         <input
           value={query}
-          onChange={handleSearch}
+          onChange={searchQuery}
           placeholder="Search name, city, or order status..."
           className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
         />
@@ -207,26 +207,42 @@ function MergeNestedPage() {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
-        <select
-          value={sortField}
-          onChange={(event) => setSortField(event.target.value as SortField)}
-          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-        >
-          <option value="age">age</option>
-          <option value="name">name</option>
-          <option value="city">city</option>
-        </select>
+        <div>
+          <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
+          <select
+            value={sortField}
+            onChange={(event) => setSortField(event.target.value as SortField)}
+            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+          >
+            <option value="age">age</option>
+            <option value="name">name</option>
+            <option value="city">city</option>
+          </select>
+        </div>
 
-        <select
-          value={sortDirection}
-          onChange={(event) =>
-            setSortDirection(event.target.value as SortDirection)
-          }
-          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-        >
-          <option value="asc">asc</option>
-          <option value="desc">desc</option>
-        </select>
+        <div>
+          <p className="mb-1 text-sm font-medium text-slate-800">Direction</p>
+          <select
+            value={sortDirection}
+            onChange={(event) =>
+              setSortDirection(event.target.value as SortDirection)
+            }
+            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+          >
+            <option value="asc">asc</option>
+            <option value="desc">desc</option>
+          </select>
+        </div>
+
+        <div className="flex items-end">
+          <button
+            type="button"
+            onClick={resetPipeline}
+            className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+          >
+            Reset pipeline
+          </button>
+        </div>
       </div>
 
       <ShowingCount count={result.length} itemName="users" />
