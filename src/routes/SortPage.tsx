@@ -1,18 +1,13 @@
 import { useMemo, useState, useDeferredValue } from "react";
-import { SortEngine } from "@devisfuture/mega-collection/sort";
-import { users, type User } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
-
-const engine = new SortEngine<User>({
-  data: users,
-  fields: ["age", "name", "city"],
-});
+import { useDemoEngine } from "../modules/demo-modules";
 
 function SortPage() {
+  const engine = useDemoEngine("sort");
   const [field, setField] = useState<"name" | "city" | "age">("age");
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
@@ -40,7 +35,8 @@ function SortPage() {
         title="Sort"
         description={
           <>
-            Uses <strong>SortEngine</strong> for dynamic sorting.
+            Uses <strong>SortEngine</strong> with prepared indexes for
+            single-field sorting over the stored 100K dataset.
           </>
         }
       />

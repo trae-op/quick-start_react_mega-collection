@@ -1,15 +1,15 @@
 import { List, type RowComponentProps } from "react-window";
 import { AutoSizer } from "react-virtualized-auto-sizer";
-import { defaultLimit, type User } from "../data/users";
+import { defaultLimit, type UserWithOrders } from "../data/users";
 
-const ROW_HEIGHT = 73;
+const ROW_HEIGHT = 92;
 
 type UserRowProps = {
-  items: User[];
+  items: UserWithOrders[];
 };
 
-type VirtualizedUserCardsProps = {
-  items: User[];
+type VirtualizedNestedUserCardsProps = {
+  items: UserWithOrders[];
   limit?: number;
 };
 
@@ -35,15 +35,18 @@ function UserRow({
         <p className="text-xs text-slate-600">
           {user.city} • {user.age} years
         </p>
+        <p className="mt-1 text-xs text-slate-500">
+          Orders: {user.orders.map((order) => order.status).join(", ")}
+        </p>
       </article>
     </div>
   );
 }
 
-function VirtualizedUserCards({
+function VirtualizedNestedUserCards({
   items,
   limit = defaultLimit,
-}: VirtualizedUserCardsProps) {
+}: VirtualizedNestedUserCardsProps) {
   const visibleItems = items.slice(0, limit);
 
   if (visibleItems.length === 0) {
@@ -55,7 +58,7 @@ function VirtualizedUserCards({
   }
 
   return (
-    <div className="mt-4 h-[350px] rounded-lg border border-slate-200 bg-white p-2">
+    <div className="mt-4 h-[360px] rounded-lg border border-slate-200 bg-white p-2">
       <AutoSizer
         renderProp={({ height, width }) => {
           if (!height || !width) {
@@ -78,4 +81,4 @@ function VirtualizedUserCards({
   );
 }
 
-export default VirtualizedUserCards;
+export default VirtualizedNestedUserCards;

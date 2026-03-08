@@ -1,45 +1,51 @@
-import { useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState, type ChangeEvent } from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { ages, cities, defaultLimit, type User } from "../data/users";
-import VirtualizedUserCards from "../components/VirtualizedUserCards";
-import ShowingCount from "../components/ShowingCount";
+import {
+  ages,
+  cities,
+  orderStatuses,
+  type UserWithOrders,
+} from "../data/users";
 import PageHeader from "../components/PageHeader";
+import ShowingCount from "../components/ShowingCount";
+import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
 import { useDemoEngine } from "../modules/demo-modules";
 
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
-function MergePage() {
-  const engine = useDemoEngine("merge");
+function MergeNestedPage() {
+  const engine = useDemoEngine("mergeNested");
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
 
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+
   const deferredCities = useDeferredValue(selectedCities);
   const deferredAges = useDeferredValue(selectedAges);
+  const deferredStatuses = useDeferredValue(selectedStatuses);
 
   const [sortField, setSortField] = useState<SortField>("age");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const deferredSortField = useDeferredValue(sortField);
   const deferredSortDirection = useDeferredValue(sortDirection);
 
-  const isFilterPending =
-    deferredCities !== selectedCities || deferredAges !== selectedAges;
-  const isSortPending =
-    deferredSortField !== sortField || deferredSortDirection !== sortDirection;
-  const isSearchPending = deferredQuery !== query;
-  const isPending = isSearchPending || isFilterPending || isSortPending;
-
   const result = useMemo(() => {
-    const criteria: FilterCriterion<User>[] = [];
+    const criteria: FilterCriterion<UserWithOrders>[] = [];
     const trimmedQuery = deferredQuery.trim();
 
     if (deferredCities.length > 0) {
       criteria.push({ field: "city", values: deferredCities });
     }
+
     if (deferredAges.length > 0) {
       criteria.push({ field: "age", values: deferredAges });
+    }
+
+    if (deferredStatuses.length > 0) {
+      criteria.push({ field: "orders.status", values: deferredStatuses });
     }
 
     return engine
@@ -50,36 +56,28 @@ function MergePage() {
     deferredQuery,
     deferredCities,
     deferredAges,
+    deferredStatuses,
     deferredSortField,
     deferredSortDirection,
   ]);
 
-  const toggleCity = (city: string) => {
-    setSelectedCities((prev) =>
-      prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city],
-    );
-  };
+  const isPending =
+    deferredQuery !== query ||
+    deferredCities !== selectedCities ||
+    deferredAges !== selectedAges ||
+    deferredStatuses !== selectedStatuses ||
+    deferredSortField !== sortField ||
+    deferredSortDirection !== sortDirection;
 
-  const toggleAge = (age: number) => {
-    setSelectedAges((prev) =>
-      prev.includes(age) ? prev.filter((a) => a !== age) : [...prev, age],
-    );
-  };
-
-  const onChangeSortField = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortField(event.target.value as SortField);
-  };
-
-  const onChangeSortDirection = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSortDirection(event.target.value as SortDirection);
+  const searchQuery = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
   const resetPipeline = () => {
     setQuery("");
     setSelectedCities([]);
     setSelectedAges([]);
+    setSelectedStatuses([]);
     setSortField("age");
     setSortDirection("asc");
   };
@@ -87,15 +85,14 @@ function MergePage() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
-        title="Merge"
+        title="Merge Nested"
         description={
           <>
-            Combines <strong>TextSearchEngine</strong>,{" "}
-            <strong>FilterEngine</strong>, and <strong>SortEngine</strong>{" "}
-            through a single <strong>MergeEngines</strong> facade. The demo uses
-            the chain API directly:{" "}
-            <code>search(query).filter(criteria).sort(...)</code>
-            on {defaultLimit} users.
+            Combines nested <strong>search</strong>, <strong>filter</strong>,
+            and <strong>sort</strong> with dot-path support for
+            <code>orders.status</code> through chained
+            <code> MergeEngines </code>
+            calls.
           </>
         }
       />
@@ -104,21 +101,27 @@ function MergePage() {
         <p className="text-sm font-medium text-slate-800">Search</p>
         <input
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search by name or city…"
+          onChange={searchQuery}
+          placeholder="Search name, city, or order status..."
           className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
         />
       </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div>
-          <p className="text-sm font-medium text-slate-800">Filter by city</p>
+          <p className="text-sm font-medium text-slate-800">Cities</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {cities.map((city) => (
               <button
                 key={city}
                 type="button"
-                onClick={() => toggleCity(city)}
+                onClick={() =>
+                  setSelectedCities((prev) =>
+                    prev.includes(city)
+                      ? prev.filter((value) => value !== city)
+                      : [...prev, city],
+                  )
+                }
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedCities.includes(city)
                     ? "border-slate-700 bg-slate-700 text-white"
@@ -132,13 +135,19 @@ function MergePage() {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-slate-800">Filter by age</p>
+          <p className="text-sm font-medium text-slate-800">Ages</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {ages.map((age) => (
               <button
                 key={age}
                 type="button"
-                onClick={() => toggleAge(age)}
+                onClick={() =>
+                  setSelectedAges((prev) =>
+                    prev.includes(age)
+                      ? prev.filter((value) => value !== age)
+                      : [...prev, age],
+                  )
+                }
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedAges.includes(age)
                     ? "border-slate-700 bg-slate-700 text-white"
@@ -150,6 +159,32 @@ function MergePage() {
             ))}
           </div>
         </div>
+
+        <div>
+          <p className="text-sm font-medium text-slate-800">Order status</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {orderStatuses.map((status) => (
+              <button
+                key={status}
+                type="button"
+                onClick={() =>
+                  setSelectedStatuses((prev) =>
+                    prev.includes(status)
+                      ? prev.filter((value) => value !== status)
+                      : [...prev, status],
+                  )
+                }
+                className={`rounded-full border px-3 py-1 text-xs ${
+                  selectedStatuses.includes(status)
+                    ? "border-slate-700 bg-slate-700 text-white"
+                    : "border-slate-300 bg-white text-slate-700"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
@@ -157,7 +192,7 @@ function MergePage() {
           <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
           <select
             value={sortField}
-            onChange={onChangeSortField}
+            onChange={(event) => setSortField(event.target.value as SortField)}
             className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
           >
             <option value="age">age</option>
@@ -170,7 +205,9 @@ function MergePage() {
           <p className="mb-1 text-sm font-medium text-slate-800">Direction</p>
           <select
             value={sortDirection}
-            onChange={onChangeSortDirection}
+            onChange={(event) =>
+              setSortDirection(event.target.value as SortDirection)
+            }
             className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
           >
             <option value="asc">asc</option>
@@ -192,10 +229,10 @@ function MergePage() {
       <ShowingCount count={result.length} itemName="users" />
 
       <div className={isPending ? "opacity-30 transition-opacity" : ""}>
-        <VirtualizedUserCards items={result} />
+        <VirtualizedNestedUserCards items={result} />
       </div>
     </section>
   );
 }
 
-export default MergePage;
+export default MergeNestedPage;
