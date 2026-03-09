@@ -67,7 +67,7 @@ function FilterRemovePage() {
       return users;
     }
 
-    const criteria = [{ field: "id", exclude: deferredRemovedIds }] as any;
+    const criteria = [{ field: "id", exclude: deferredRemovedIds }];
 
     return engine.filter(criteria);
   }, [deferredRemovedIds, engine, users]);
@@ -86,19 +86,17 @@ function FilterRemovePage() {
       return;
     }
 
-    startTransition(() => {
-      setRemovedIds((prev) => {
-        const nextIds = new Set(prev);
+    setRemovedIds((prev) => {
+      const nextIds = new Set(prev);
 
-        for (const id of checkedIds) {
-          nextIds.add(id);
-        }
+      for (const id of checkedIds) {
+        nextIds.add(id);
+      }
 
-        return [...nextIds];
-      });
-
-      setCheckedIds([]);
+      return [...nextIds];
     });
+
+    setCheckedIds([]);
   };
 
   const resetRemoved = () => {
@@ -129,7 +127,7 @@ function FilterRemovePage() {
           type="button"
           onClick={deleteChecked}
           disabled={checkedIds.length === 0}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:bg-slate-300"
+          className="cursor-pointer rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           Delete ({checkedIds.length})
         </button>
@@ -137,7 +135,7 @@ function FilterRemovePage() {
         <button
           type="button"
           onClick={resetRemoved}
-          className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 text-sm text-slate-700"
+          className="cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 text-sm text-slate-700"
         >
           Reset collection
         </button>
