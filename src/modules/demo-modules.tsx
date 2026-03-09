@@ -155,6 +155,7 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     data: users,
     fields: ["id", "city", "age"],
     filterByPreviousResult: true,
+    mutableExcludeField: "id",
   });
 
   const filterNested = new FilterEngine<UserWithOrders>({
