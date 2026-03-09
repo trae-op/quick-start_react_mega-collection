@@ -153,7 +153,7 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
 
   const filter = new FilterEngine<User>({
     data: users,
-    fields: ["city", "age"],
+    fields: ["id", "city", "age"],
     filterByPreviousResult: true,
   });
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import FilterPage from "./routes/FilterPage";
 import FilterNestedPage from "./routes/FilterNestedPage";
+import FilterRemovePage from "./routes/FilterRemovePage";
 import MergePage from "./routes/MergePage";
 import MergeNestedPage from "./routes/MergeNestedPage";
 import SearchPage from "./routes/SearchPage";
@@ -18,6 +19,7 @@ const navItems = [
   { to: "/search", label: "Search" },
   { to: "/search-nested", label: "Search Nested" },
   { to: "/filter", label: "Filter" },
+  { to: "/filter-remove", label: "Filter Remove" },
   { to: "/filter-nested", label: "Filter Nested" },
   { to: "/sort", label: "Sort" },
   { to: "/merge", label: "Merge" },
@@ -89,6 +91,7 @@ function App() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/search-nested" element={<SearchNestedPage />} />
               <Route path="/filter" element={<FilterPage />} />
+              <Route path="/filter-remove" element={<FilterRemovePage />} />
               <Route path="/filter-nested" element={<FilterNestedPage />} />
               <Route path="/sort" element={<SortPage />} />
               <Route path="/merge" element={<MergePage />} />
