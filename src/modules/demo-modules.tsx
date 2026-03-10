@@ -22,6 +22,7 @@ export type DemoEngineRegistry = {
   filterNested: FilterEngine<UserWithOrders>;
   sort: SortEngine<User>;
   merge: MergeEngines<User>;
+  filterMutableExclude: FilterEngine<User>;
   mergeNested: MergeEngines<UserWithOrders>;
 };
 
@@ -155,6 +156,12 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     data: users,
     fields: ["id", "city", "age"],
     filterByPreviousResult: true,
+  });
+
+  const filterMutableExclude = new FilterEngine<User>({
+    data: users,
+    fields: ["id", "city", "age"],
+    filterByPreviousResult: true,
     mutableExcludeField: "id",
   });
 
@@ -216,6 +223,7 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
   engineModules.set("sort", sort);
   engineModules.set("merge", merge);
   engineModules.set("mergeNested", mergeNested);
+  engineModules.set("filterMutableExclude", filterMutableExclude);
 
   const readySnapshot: DemoModulesSnapshot = {
     status: "ready",

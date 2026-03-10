@@ -55,7 +55,7 @@ function RemovableUserRow({
 }
 
 function FilterRemovePage() {
-  const engine = useDemoEngine("filter");
+  const engine = useDemoEngine("filterMutableExclude");
   const users = useDemoData("users");
   const [checkedIds, setCheckedIds] = useState<number[]>([]);
   const [removedIds, setRemovedIds] = useState<number[]>([]);
