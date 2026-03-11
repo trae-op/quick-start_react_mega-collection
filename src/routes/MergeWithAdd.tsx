@@ -7,6 +7,7 @@ import {
   startTransition,
 } from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
+import type { MergeEngines } from "@devisfuture/mega-collection/merge";
 import { defaultLimit, type User, cities, ages } from "../data/users";
 import AddModal from "../components/AddModal";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
@@ -18,8 +19,13 @@ type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
 const AddUser = memo(
-  ({ handleSuccessfully }: { handleSuccessfully: () => void }) => {
-    const engine = useDemoEngine("merge");
+  ({
+    handleSuccessfully,
+    engine,
+  }: {
+    handleSuccessfully: () => void;
+    engine: MergeEngines<User>;
+  }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const handleAddUser = useCallback(
@@ -215,7 +221,7 @@ function MergeWithAddPage() {
 
       <div className="mt-4 flex flex-wrap gap-3">
         <div className="flex items-end">
-          <AddUser handleSuccessfully={handleSuccessfully} />
+          <AddUser handleSuccessfully={handleSuccessfully} engine={engine} />
         </div>
 
         <div>
