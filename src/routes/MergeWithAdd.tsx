@@ -60,7 +60,7 @@ const AddUser = memo(
 );
 
 function MergeWithAddPage() {
-  const engine = useDemoEngine("merge");
+  const engine = useDemoEngine("mergeWithAdd");
   const [query, setQuery] = useState("");
   const [dataVersion, setDataVersion] = useState(0);
   const deferredQuery = useDeferredValue(query);

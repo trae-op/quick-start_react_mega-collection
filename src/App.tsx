@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import FilterPage from "./routes/FilterPage";
 import FilterNestedPage from "./routes/FilterNestedPage";
@@ -51,36 +51,45 @@ const useAppModules = () => {
   return modulesSnapshot;
 };
 
-const AppNav = memo(({ isReady }: { isReady: boolean }) => (
-  <nav
-    className={`flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm ${
-      isReady ? "" : "opacity-70"
-    }`}
-  >
-    {NAV_ITEMS.map((item) => (
-      <NavLink
-        key={item.to}
-        to={item.to}
-        aria-disabled={!isReady}
-        tabIndex={isReady ? 0 : -1}
-        onClick={(event) => {
-          if (!isReady) event.preventDefault();
-        }}
-        className={({ isActive }) =>
-          `rounded-lg px-4 py-2 text-sm font-medium transition ${
-            isReady
-              ? isActive
-                ? "bg-slate-900 text-white"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              : "cursor-not-allowed bg-slate-100 text-slate-400"
-          }`
-        }
-      >
-        {item.label}
-      </NavLink>
-    ))}
-  </nav>
-));
+const AppNav = memo(({ isReady }: { isReady: boolean }) => {
+  const handleNav = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      if (!isReady) {
+        event.preventDefault();
+      }
+    },
+    [isReady],
+  );
+
+  return (
+    <nav
+      className={`flex flex-wrap gap-2 rounded-xl border border-slate-200 bg-white p-2 shadow-sm ${
+        isReady ? "" : "opacity-70"
+      }`}
+    >
+      {NAV_ITEMS.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          aria-disabled={!isReady}
+          tabIndex={isReady ? 0 : -1}
+          onClick={handleNav}
+          className={({ isActive }) =>
+            `rounded-lg px-3 py-1 text-[12px] font-medium transition ${
+              isReady
+                ? isActive
+                  ? "bg-slate-900 text-white"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                : "cursor-not-allowed bg-slate-100 text-slate-400"
+            }`
+          }
+        >
+          {item.label}
+        </NavLink>
+      ))}
+    </nav>
+  );
+});
 
 const AppError = memo(({ message }: { message: string }) => (
   <section className="rounded-xl border border-red-200 bg-red-50 p-6 text-sm text-red-700 shadow-sm">

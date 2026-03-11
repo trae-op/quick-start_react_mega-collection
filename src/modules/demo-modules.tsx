@@ -24,6 +24,7 @@ export type DemoEngineRegistry = {
   merge: MergeEngines<User>;
   filterMutableExclude: FilterEngine<User>;
   mergeNested: MergeEngines<UserWithOrders>;
+  mergeWithAdd: MergeEngines<User>;
 };
 
 export type DemoDataMap = Map<
@@ -199,6 +200,14 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     sort: { fields: ["age", "name", "city"] },
   });
 
+  const mergeWithAdd = new MergeEngines<User>({
+    imports: [TextSearchEngine, SortEngine, FilterEngine],
+    data: users,
+    search: { fields: ["name", "city"], minQueryLength: 2 },
+    filter: { fields: ["city", "age"], filterByPreviousResult: true },
+    sort: { fields: ["age", "name", "city"] },
+  });
+
   const mergeNested = new MergeEngines<UserWithOrders>({
     imports: [TextSearchEngine, FilterEngine, SortEngine],
     data: nestedUsers,
@@ -222,6 +231,7 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
   engineModules.set("filterNested", filterNested);
   engineModules.set("sort", sort);
   engineModules.set("merge", merge);
+  engineModules.set("mergeWithAdd", mergeWithAdd);
   engineModules.set("mergeNested", mergeNested);
   engineModules.set("filterMutableExclude", filterMutableExclude);
 
