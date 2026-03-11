@@ -1,6 +1,13 @@
-import { useDeferredValue, useMemo, useState } from "react";
+import {
+  startTransition,
+  useDeferredValue,
+  useMemo,
+  useState,
+  useCallback,
+} from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { ages, cities, defaultLimit, type User } from "../data/users";
+import { defaultLimit, type User, cities, ages } from "../data/users";
+import AddModal from "../components/AddModal";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
@@ -12,6 +19,8 @@ type SortDirection = "asc" | "desc";
 function MergePage() {
   const engine = useDemoEngine("merge");
   const [query, setQuery] = useState("");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [dataVersion, setDataVersion] = useState(0);
   const deferredQuery = useDeferredValue(query);
 
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -47,6 +56,8 @@ function MergePage() {
       .filter(criteria)
       .sort([{ field: deferredSortField, direction: deferredSortDirection }]);
   }, [
+    dataVersion,
+    engine,
     deferredQuery,
     deferredCities,
     deferredAges,
@@ -83,6 +94,26 @@ function MergePage() {
     setSortField("age");
     setSortDirection("asc");
   };
+
+  const handleAddUser = useCallback(
+    ({ age, city, name }: { name: string; age: number; city: string }) => {
+      engine.add([
+        {
+          id: Date.now(),
+          name,
+          age,
+          city,
+        },
+      ]);
+
+      setIsAddModalOpen(false);
+
+      startTransition(() => {
+        setDataVersion((current) => current + 1);
+      });
+    },
+    [engine],
+  );
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -153,6 +184,16 @@ function MergePage() {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
+        <div className="flex items-end">
+          <button
+            type="button"
+            onClick={() => setIsAddModalOpen(true)}
+            className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white"
+          >
+            Add user
+          </button>
+        </div>
+
         <div>
           <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
           <select
@@ -194,6 +235,12 @@ function MergePage() {
       <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
       </div>
+
+      <AddModal
+        isOpen={isAddModalOpen}
+        onCancel={() => setIsAddModalOpen(false)}
+        onAdd={handleAddUser}
+      />
     </section>
   );
 }
