@@ -1,9 +1,10 @@
 import {
-  startTransition,
   useDeferredValue,
   useMemo,
   useState,
   useCallback,
+  memo,
+  startTransition,
 } from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
 import { defaultLimit, type User, cities, ages } from "../data/users";
@@ -16,10 +17,51 @@ import { useDemoEngine } from "../modules/demo-modules";
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
+const AddUser = memo(
+  ({ handleSuccessfully }: { handleSuccessfully: () => void }) => {
+    const engine = useDemoEngine("merge");
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    const handleAddUser = useCallback(
+      ({ age, city, name }: { name: string; age: number; city: string }) => {
+        engine.add([
+          {
+            id: Date.now(),
+            name,
+            age,
+            city,
+          },
+        ]);
+
+        handleSuccessfully();
+        setIsAddModalOpen(false);
+      },
+      [engine, handleSuccessfully],
+    );
+
+    return (
+      <>
+        <button
+          type="button"
+          onClick={() => setIsAddModalOpen(true)}
+          className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white"
+        >
+          Add user
+        </button>
+
+        <AddModal
+          isOpen={isAddModalOpen}
+          onCancel={() => setIsAddModalOpen(false)}
+          onAdd={handleAddUser}
+        />
+      </>
+    );
+  },
+);
+
 function MergeWithAddPage() {
   const engine = useDemoEngine("merge");
   const [query, setQuery] = useState("");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [dataVersion, setDataVersion] = useState(0);
   const deferredQuery = useDeferredValue(query);
 
@@ -95,25 +137,11 @@ function MergeWithAddPage() {
     setSortDirection("asc");
   };
 
-  const handleAddUser = useCallback(
-    ({ age, city, name }: { name: string; age: number; city: string }) => {
-      engine.add([
-        {
-          id: Date.now(),
-          name,
-          age,
-          city,
-        },
-      ]);
-
-      setIsAddModalOpen(false);
-
-      startTransition(() => {
-        setDataVersion((current) => current + 1);
-      });
-    },
-    [engine],
-  );
+  const handleSuccessfully = () => {
+    startTransition(() => {
+      setDataVersion((current) => current + 1);
+    });
+  };
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -187,13 +215,7 @@ function MergeWithAddPage() {
 
       <div className="mt-4 flex flex-wrap gap-3">
         <div className="flex items-end">
-          <button
-            type="button"
-            onClick={() => setIsAddModalOpen(true)}
-            className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white"
-          >
-            Add user
-          </button>
+          <AddUser handleSuccessfully={handleSuccessfully} />
         </div>
 
         <div>
@@ -237,12 +259,6 @@ function MergeWithAddPage() {
       <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
       </div>
-
-      <AddModal
-        isOpen={isAddModalOpen}
-        onCancel={() => setIsAddModalOpen(false)}
-        onAdd={handleAddUser}
-      />
     </section>
   );
 }
