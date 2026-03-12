@@ -5,6 +5,7 @@ import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
 import { useDemoEngine } from "../modules/demo-modules";
+import { SortSelect } from "src/components/SortSelect";
 
 function SortPage() {
   const engine = useDemoEngine("sort");
@@ -42,15 +43,7 @@ function SortPage() {
       />
 
       <div className="mt-4 flex flex-wrap gap-3">
-        <select
-          value={field}
-          onChange={onChangeField}
-          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-        >
-          <option value="age">age</option>
-          <option value="name">name</option>
-          <option value="city">city</option>
-        </select>
+        <SortSelect onChange={onChangeField} field={field} />
 
         <select
           value={direction}

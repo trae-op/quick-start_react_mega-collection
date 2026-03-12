@@ -10,6 +10,7 @@ import PageHeader from "../components/PageHeader";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
 import { useDemoEngine } from "../modules/demo-modules";
+import { SortSelect } from "src/components/SortSelect";
 
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
@@ -80,6 +81,10 @@ function MergeNestedPage() {
     setSelectedStatuses([]);
     setSortField("age");
     setSortDirection("asc");
+  };
+
+  const onChangeSortField = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSortField(event.target.value as SortField);
   };
 
   return (
@@ -190,15 +195,8 @@ function MergeNestedPage() {
       <div className="mt-4 flex flex-wrap gap-3">
         <div>
           <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
-          <select
-            value={sortField}
-            onChange={(event) => setSortField(event.target.value as SortField)}
-            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-          >
-            <option value="age">age</option>
-            <option value="name">name</option>
-            <option value="city">city</option>
-          </select>
+
+          <SortSelect onChange={onChangeSortField} field={sortField} />
         </div>
 
         <div>

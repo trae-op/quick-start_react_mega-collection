@@ -14,6 +14,7 @@ import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
 import { useDemoEngine } from "../modules/demo-modules";
+import { SortSelect } from "src/components/SortSelect";
 
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
@@ -226,15 +227,7 @@ function MergeWithAddPage() {
 
         <div>
           <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
-          <select
-            value={sortField}
-            onChange={onChangeSortField}
-            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
-          >
-            <option value="age">age</option>
-            <option value="name">name</option>
-            <option value="city">city</option>
-          </select>
+          <SortSelect onChange={onChangeSortField} field={sortField} />
         </div>
 
         <div>

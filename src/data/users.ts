@@ -2,6 +2,8 @@ export type User = {
   id: number;
   name: string;
   city: string;
+  updatedAt?: Date;
+  createdAt?: Date;
   age: number;
 };
 
@@ -13,6 +15,14 @@ export type UserWithOrders = User & {
     status: OrderStatus;
   }>;
 };
+
+export const sortList = [
+  { label: "age", value: "age" },
+  { label: "name", value: "name" },
+  { label: "createdAt", value: "createdAt" },
+  { label: "updatedAt", value: "updatedAt" },
+  { label: "city", value: "city" },
+];
 
 const names = [
   "John",
