@@ -1,15 +1,20 @@
-import React from "react";
 import { defaultLimit } from "../data/users";
 
 interface ShowingCountProps {
   count: number;
   itemName: string;
+  totalCount?: number;
 }
 
-const ShowingCount: React.FC<ShowingCountProps> = ({ count, itemName }) => {
+const ShowingCount = ({
+  count,
+  itemName,
+  totalCount = defaultLimit,
+}: ShowingCountProps) => {
   return (
     <p className="mt-3 text-xs text-slate-500">
-      Showing {Math.min(count, defaultLimit)} of {defaultLimit} {itemName}
+      Showing {count.toLocaleString()} of {totalCount.toLocaleString()}{" "}
+      {itemName}
     </p>
   );
 };

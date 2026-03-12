@@ -36,6 +36,8 @@ const AddUser = memo(
             name,
             age,
             city,
+            createdAt: new Date(),
+            updatedAt: new Date(),
           },
         ]);
 
@@ -252,7 +254,11 @@ function MergeWithAddPage() {
         </div>
       </div>
 
-      <ShowingCount count={result.length} itemName="users" />
+      <ShowingCount
+        count={result.length}
+        //totalCount={totalCount}
+        itemName="users"
+      />
 
       <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
