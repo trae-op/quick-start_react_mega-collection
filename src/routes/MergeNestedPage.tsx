@@ -10,7 +10,7 @@ import PageHeader from "../components/PageHeader";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
 import { useDemoEngine } from "../modules/demo-modules";
-import { SortSelect } from "src/components/SortSelect";
+import { SortSelect } from "../components/SortSelect";
 
 type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";

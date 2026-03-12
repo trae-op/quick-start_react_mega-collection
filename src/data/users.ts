@@ -80,11 +80,21 @@ export async function createUsers({
     for (let index = start; index < end; index += 1) {
       const id = index + 1;
 
+      const now = Date.now();
+      const createdAt = new Date(
+        now - Math.random() * 1000 * 60 * 60 * 24 * 365,
+      );
+      const updatedAt = new Date(
+        createdAt.getTime() + Math.random() * (now - createdAt.getTime()),
+      );
+
       result[index] = {
         id,
         name: `${names[index % names.length]} ${id}`,
         city: cities[index % cities.length],
         age: ages[index % ages.length],
+        createdAt,
+        updatedAt,
       };
     }
 

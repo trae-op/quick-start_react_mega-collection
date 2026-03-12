@@ -5,7 +5,7 @@ import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
 import { useDemoEngine } from "../modules/demo-modules";
-import { SortSelect } from "src/components/SortSelect";
+import { SortSelect } from "../components/SortSelect";
 
 function SortPage() {
   const engine = useDemoEngine("sort");

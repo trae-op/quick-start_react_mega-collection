@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { sortList } from "src/data/users";
+import { sortList } from "../data/users";
 
-type SortField = "name" | "city" | "age" | "createdAt" | "updatedAt";
+export type SortField = "name" | "city" | "age" | "createdAt" | "updatedAt";
 
 export const SortSelect = memo(
   ({

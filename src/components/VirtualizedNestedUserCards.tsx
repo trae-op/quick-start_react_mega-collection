@@ -1,6 +1,6 @@
 import { List, type RowComponentProps } from "react-window";
 import { AutoSizer } from "react-virtualized-auto-sizer";
-import { defaultLimit, type UserWithOrders } from "../data/users";
+import { type UserWithOrders } from "../data/users";
 
 const ROW_HEIGHT = 92;
 
@@ -33,7 +33,7 @@ function UserRow({
       >
         <p className="text-sm font-medium text-slate-900">{user.name}</p>
         <p className="text-xs text-slate-600">
-          {user.city} • {user.age} years
+          {user.city} • {user.age} yo
         </p>
         <p className="mt-1 text-xs text-slate-500">
           Orders: {user.orders.map((order) => order.status).join(", ")}
@@ -45,11 +45,8 @@ function UserRow({
 
 function VirtualizedNestedUserCards({
   items,
-  limit = defaultLimit,
 }: VirtualizedNestedUserCardsProps) {
-  const visibleItems = items.slice(0, limit);
-
-  if (visibleItems.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
         No users found.
@@ -67,10 +64,10 @@ function VirtualizedNestedUserCards({
 
           return (
             <List
-              rowCount={visibleItems.length}
+              rowCount={items.length}
               rowHeight={ROW_HEIGHT}
               rowComponent={UserRow}
-              rowProps={{ items: visibleItems }}
+              rowProps={{ items: items }}
               overscanCount={1}
               style={{ height, width }}
             />

@@ -14,9 +14,8 @@ import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
 import { useDemoEngine } from "../modules/demo-modules";
-import { SortSelect } from "src/components/SortSelect";
+import { SortSelect, type SortField } from "../components/SortSelect";
 
-type SortField = "age" | "name" | "city";
 type SortDirection = "asc" | "desc";
 
 const AddUser = memo(
@@ -77,8 +76,8 @@ function MergeWithAddPage() {
   const deferredCities = useDeferredValue(selectedCities);
   const deferredAges = useDeferredValue(selectedAges);
 
-  const [sortField, setSortField] = useState<SortField>("age");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [sortField, setSortField] = useState<SortField>("createdAt");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const deferredSortField = useDeferredValue(sortField);
   const deferredSortDirection = useDeferredValue(sortDirection);
 
