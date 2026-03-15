@@ -3,8 +3,9 @@ import {
   useMemo,
   useState,
   useCallback,
-  memo,
+  useTransition,
   startTransition,
+  memo,
 } from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
 import type { MergeEngines } from "@devisfuture/mega-collection/merge";
@@ -16,79 +17,69 @@ import PageHeader from "../components/PageHeader";
 import { useDemoEngine } from "../modules/demo-modules";
 import { SortSelect, type SortField } from "../components/SortSelect";
 
-type SortDirection = "asc" | "desc";
+type TSortDirection = "asc" | "desc";
 
-const AddUser = memo(
-  ({
-    handleSuccessfully,
-    engine,
-  }: {
-    handleSuccessfully: () => void;
-    engine: MergeEngines<User>;
-  }) => {
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+type TAddUserProps = {
+  onAdd: (payload: { name: string; age: number; city: string }) => void;
+  isPending: boolean;
+};
 
-    const handleAddUser = useCallback(
-      ({ age, city, name }: { name: string; age: number; city: string }) => {
-        engine.add([
-          {
-            id: Date.now(),
-            name,
-            age,
-            city,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ]);
+const AddUser = memo((props: TAddUserProps) => {
+  const { onAdd, isPending } = props;
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-        handleSuccessfully();
-        setIsAddModalOpen(false);
-      },
-      [engine, handleSuccessfully],
-    );
+  const handleAddUser = useCallback(
+    ({ age, city, name }: { name: string; age: number; city: string }) => {
+      onAdd({ name, age, city });
+      setIsAddModalOpen(false);
+    },
+    [onAdd],
+  );
 
-    return (
-      <>
-        <button
-          type="button"
-          onClick={() => setIsAddModalOpen(true)}
-          className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white"
-        >
-          Add user
-        </button>
+  return (
+    <>
+      <button
+        type="button"
+        disabled={isPending}
+        onClick={() => setIsAddModalOpen(true)}
+        className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-50"
+      >
+        {isPending ? "Processing…" : "Add user"}
+      </button>
 
-        <AddModal
-          isOpen={isAddModalOpen}
-          onCancel={() => setIsAddModalOpen(false)}
-          onAdd={handleAddUser}
-        />
-      </>
-    );
-  },
-);
+      <AddModal
+        isOpen={isAddModalOpen}
+        onCancel={() => setIsAddModalOpen(false)}
+        onAdd={handleAddUser}
+      />
+    </>
+  );
+});
 
-function MergeWithAddPage() {
+const MergeWithAddPage = memo(() => {
   const engine = useDemoEngine("mergeWithAdd");
   const [query, setQuery] = useState("");
   const [dataVersion, setDataVersion] = useState(0);
-  const deferredQuery = useDeferredValue(query);
-
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedAges, setSelectedAges] = useState<number[]>([]);
+  const [sortField, setSortField] = useState<SortField>("createdAt");
+  const [sortDirection, setSortDirection] = useState<TSortDirection>("desc");
+
+  const [isComputePending, startComputeTransition] = useTransition();
+
+  const deferredQuery = useDeferredValue(query);
   const deferredCities = useDeferredValue(selectedCities);
   const deferredAges = useDeferredValue(selectedAges);
-
-  const [sortField, setSortField] = useState<SortField>("createdAt");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const deferredSortField = useDeferredValue(sortField);
   const deferredSortDirection = useDeferredValue(sortDirection);
 
-  const isFilterPending =
-    deferredCities !== selectedCities || deferredAges !== selectedAges;
-  const isSortPending =
-    deferredSortField !== sortField || deferredSortDirection !== sortDirection;
-  const isSearchPending = deferredQuery !== query;
-  const isPending = isSearchPending || isFilterPending || isSortPending;
+  const isPending =
+    isComputePending ||
+    deferredCities !== selectedCities ||
+    deferredAges !== selectedAges ||
+    deferredSortField !== sortField ||
+    deferredSortDirection !== sortDirection ||
+    deferredQuery !== query;
 
   const result = useMemo(() => {
     const criteria: FilterCriterion<User>[] = [];
@@ -115,41 +106,61 @@ function MergeWithAddPage() {
     deferredSortDirection,
   ]);
 
-  const toggleCity = (city: string) => {
+  const handleAddUser = useCallback(
+    ({ name, age, city }: { name: string; age: number; city: string }) => {
+      engine.add([
+        {
+          id: Date.now(),
+          name,
+          age,
+          city,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ]);
+
+      startComputeTransition(() => {
+        setDataVersion((current) => current + 1);
+      });
+    },
+    [engine, startComputeTransition],
+  );
+
+  const toggleCity = useCallback((city: string) => {
     setSelectedCities((prev) =>
       prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city],
     );
-  };
+  }, []);
 
-  const toggleAge = (age: number) => {
+  const toggleAge = useCallback((age: number) => {
     setSelectedAges((prev) =>
       prev.includes(age) ? prev.filter((a) => a !== age) : [...prev, age],
     );
-  };
+  }, []);
 
-  const onChangeSortField = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortField(event.target.value as SortField);
-  };
+  const onChangeSortField = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSortField(event.target.value as SortField);
+    },
+    [],
+  );
 
-  const onChangeSortDirection = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSortDirection(event.target.value as SortDirection);
-  };
+  const onChangeSortDirection = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSortDirection(event.target.value as TSortDirection);
+    },
+    [],
+  );
 
-  const resetPipeline = () => {
-    setQuery("");
-    setSelectedCities([]);
-    setSelectedAges([]);
-    setSortField("age");
-    setSortDirection("asc");
-  };
-
-  const handleSuccessfully = () => {
+  const resetPipeline = useCallback(() => {
     startTransition(() => {
-      setDataVersion((current) => current + 1);
+      setQuery("");
+      setSelectedCities([]);
+      setSelectedAges([]);
+      setSortField("age");
+      setSortDirection("asc");
     });
-  };
+  }, []);
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -223,7 +234,7 @@ function MergeWithAddPage() {
 
       <div className="mt-4 flex flex-wrap gap-3">
         <div className="flex items-end">
-          <AddUser handleSuccessfully={handleSuccessfully} engine={engine} />
+          <AddUser onAdd={handleAddUser} isPending={isPending} />
         </div>
 
         <div>
@@ -254,17 +265,13 @@ function MergeWithAddPage() {
         </div>
       </div>
 
-      <ShowingCount
-        count={result.length}
-        //totalCount={totalCount}
-        itemName="users"
-      />
+      <ShowingCount count={result.length} itemName="users" />
 
       <div className={isPending ? "opacity-30 transition-opacity" : ""}>
         <VirtualizedUserCards items={result} />
       </div>
     </section>
   );
-}
+});
 
 export default MergeWithAddPage;

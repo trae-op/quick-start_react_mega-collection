@@ -195,22 +195,25 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
   const merge = new MergeEngines<User>({
     imports: [TextSearchEngine, SortEngine, FilterEngine],
     data: users,
+    filterByPreviousResult: true,
     search: { fields: ["name", "city"], minQueryLength: 2 },
-    filter: { fields: ["city", "age"], filterByPreviousResult: true },
+    filter: { fields: ["city", "age"] },
     sort: { fields: ["age", "name", "city"] },
   });
 
   const mergeWithAdd = new MergeEngines<User>({
     imports: [TextSearchEngine, SortEngine, FilterEngine],
     data: users,
+    filterByPreviousResult: true,
     search: { fields: ["name", "city"], minQueryLength: 2 },
-    filter: { fields: ["city", "age"], filterByPreviousResult: true },
+    filter: { fields: ["city", "age"] },
     sort: { fields: ["age", "name", "city"] },
   });
 
   const mergeNested = new MergeEngines<UserWithOrders>({
     imports: [TextSearchEngine, FilterEngine, SortEngine],
     data: nestedUsers,
+    filterByPreviousResult: true,
     search: {
       fields: ["name", "city"],
       minQueryLength: 2,
@@ -219,7 +222,6 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     filter: {
       fields: ["city", "age"],
       nestedFields: ["orders.status"],
-      filterByPreviousResult: true,
     },
     sort: { fields: ["age", "name", "city"] },
   });
