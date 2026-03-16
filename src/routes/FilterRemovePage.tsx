@@ -2,6 +2,7 @@ import { startTransition, useDeferredValue, useMemo, useState } from "react";
 import { List, type RowComponentProps } from "react-window";
 import { AutoSizer } from "react-virtualized-auto-sizer";
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import ShowingCount from "../components/ShowingCount";
 import type { User } from "../data/users";
 import { useDemoData, useDemoEngine } from "../modules/demo-modules";
@@ -115,7 +116,9 @@ function FilterRemovePage() {
             Remove checked users by excluding their <code>id</code> via{" "}
             <strong>FilterEngine</strong>.
             <br />
-            <code>{`engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}</code>
+            <Code
+              code={`engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
+            />
           </>
         }
       />

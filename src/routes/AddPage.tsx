@@ -11,6 +11,7 @@ import AddModal from "../components/AddModal";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import { useDemoEngine } from "../modules/demo-modules";
 import { SortSelect, type SortField } from "../components/SortSelect";
 
@@ -126,7 +127,9 @@ const AddPage = memo(() => {
           <>
             Add new users to the collection and keep the list sorted.
             <br />
-            <code>{`engine.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: new Date() }]);`}</code>
+            <Code
+              code={`engine.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: new Date() }]);`}
+            />
           </>
         }
       />

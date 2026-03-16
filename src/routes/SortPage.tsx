@@ -4,6 +4,7 @@ import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import { useDemoEngine } from "../modules/demo-modules";
 import { SortSelect } from "../components/SortSelect";
 
@@ -39,7 +40,7 @@ function SortPage() {
             Sort users by a chosen field and direction using{" "}
             <strong>SortEngine</strong>.
             <br />
-            <code>{`engine.sort([{ field: "age", direction: "asc" }]);`}</code>
+            <Code code={`engine.sort([{ field: "age", direction: "asc" }]);`} />
           </>
         }
       />

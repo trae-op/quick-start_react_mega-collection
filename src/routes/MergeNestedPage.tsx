@@ -7,6 +7,7 @@ import {
   type UserWithOrders,
 } from "../data/users";
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
 import { useDemoEngine } from "../modules/demo-modules";
@@ -96,10 +97,12 @@ function MergeNestedPage() {
             Search, filter, and sort nested users (including{" "}
             <code>orders.status</code>) via <strong>MergeEngines</strong>.
             <br />
-            <code>{`engine
+            <Code
+              code={`engine
   .search("query...")
   .filter([{ field: "orders.status", values: ["pending"] }])
-  .sort([{ field: "age", direction: "asc" }]);`}</code>
+  .sort([{ field: "age", direction: "asc" }]);`}
+            />
           </>
         }
       />

@@ -4,6 +4,7 @@ import { type User, cities, ages } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import { useDemoEngine } from "../modules/demo-modules";
 import { SortSelect } from "../components/SortSelect";
 
@@ -95,10 +96,12 @@ function MergePage() {
             Search, filter, and sort users in one chain using{" "}
             <strong>MergeEngines</strong>.
             <br />
-            <code>{`engine
+            <Code
+              code={`engine
   .search("query...")
   .filter([{ field: "city", values: ["Chicago"] }])
-  .sort([{ field: "createdAt", direction: "desc" }]);`}</code>
+  .sort([{ field: "createdAt", direction: "desc" }]);`}
+            />
           </>
         }
       />

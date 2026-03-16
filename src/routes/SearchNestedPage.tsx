@@ -1,5 +1,6 @@
 import { useDeferredValue, useMemo, useState, type ChangeEvent } from "react";
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
 import { useDemoEngine } from "../modules/demo-modules";
@@ -37,7 +38,7 @@ function SearchNestedPage() {
             Search nested fields like <code>orders.status</code> using{" "}
             <strong>TextSearchEngine</strong>.
             <br />
-            <code>engine.search("orders.status", "pending");</code>
+            <Code code={`engine.search("orders.status", "pending");`} />
           </>
         }
       />

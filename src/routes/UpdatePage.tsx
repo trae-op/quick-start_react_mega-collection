@@ -9,6 +9,7 @@ import {
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import { useDemoEngine } from "../modules/demo-modules";
 import type { User } from "../data/users";
 import UpdateModal from "../components/UpdateModal";
@@ -16,7 +17,7 @@ import { AutoSizer } from "react-virtualized-auto-sizer";
 import { List, type RowComponentProps } from "react-window";
 
 type SearchField = "all" | "name" | "city";
-const ROW_HEIGHT = 84;
+const ROW_HEIGHT = 73;
 
 type RemovableUserRowProps = {
   items: User[];
@@ -128,7 +129,9 @@ function UpdatePage() {
           <>
             Search users and update a selected record by <code>id</code>.
             <br />
-            <code>{`engine.update({ field: "id", data: { ...user, name: "…" } });`}</code>
+            <Code
+              code={`engine.update({ field: "id", data: { ...user, name: "…" } });`}
+            />
           </>
         }
       />
@@ -163,11 +166,9 @@ function UpdatePage() {
       <ShowingCount count={result.length} itemName="users" />
 
       <div
-        className={
-          isPending
-            ? "mt-4 h-[350px] opacity-30 transition-opacity"
-            : "mt-4 h-[350px]"
-        }
+        className={`mt-4 h-[calc(100vh-300px)] rounded-lg border border-slate-200 bg-white p-2 ${
+          isPending ? "opacity-30 transition-opacity" : ""
+        }`}
       >
         <AutoSizer
           renderProp={({ height, width }) => {

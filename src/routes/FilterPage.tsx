@@ -7,6 +7,7 @@ import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import { useDemoEngine } from "../modules/demo-modules";
 
 function FilterPage() {
@@ -64,7 +65,9 @@ function FilterPage() {
             Filter users by <code>city</code> and <code>age</code> using{" "}
             <strong>FilterEngine</strong>.
             <br />
-            <code>{`engine.filter([{ field: "city", values: ["Chicago"] }, { field: "age", values: [30] }]);`}</code>
+            <Code
+              code={`engine.filter([{ field: "city", values: ["Chicago"] }, { field: "age", values: [30] }]);`}
+            />
           </>
         }
       />

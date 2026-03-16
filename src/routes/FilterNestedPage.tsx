@@ -7,6 +7,7 @@ import {
   type UserWithOrders,
 } from "../data/users";
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import ShowingCount from "../components/ShowingCount";
 import VirtualizedNestedUserCards from "../components/VirtualizedNestedUserCards";
 import { useDemoData, useDemoEngine } from "../modules/demo-modules";
@@ -88,7 +89,9 @@ function FilterNestedPage() {
             Filter users and their orders by status using nested{" "}
             <strong>FilterEngine</strong> criteria.
             <br />
-            <code>{`engine.filter([{ field: "orders.status", values: ["pending"] }]);`}</code>
+            <Code
+              code={`engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
+            />
           </>
         }
       />

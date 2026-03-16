@@ -4,6 +4,7 @@ import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 
 import PageHeader from "../components/PageHeader";
+import Code from "../components/Code";
 import { useDemoEngine } from "../modules/demo-modules";
 
 type SearchField = "all" | "name" | "city";
@@ -39,8 +40,9 @@ function SearchPage() {
             Search users by <code>name</code> or <code>city</code> using{" "}
             <strong>TextSearchEngine</strong>.
             <br />
-            <code>{`const search = new TextSearchEngine<User>({ data: users, fields: ["city", "name"], minQueryLength: 2 });
-engine.search("query...");`}</code>
+            <Code
+              code={`const search = new TextSearchEngine<User>({ data: users, fields: ["city", "name"], minQueryLength: 2 });\nengine.search("query...");`}
+            />
           </>
         }
       />
