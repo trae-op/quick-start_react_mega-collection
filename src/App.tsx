@@ -14,7 +14,7 @@ import {
   initializeDemoModules,
   subscribeToDemoModules,
 } from "./modules/demo-modules";
-import MergeWithAddPage from "./routes/MergeWithAdd";
+import AddPage from "./routes/MergeWithAdd";
 
 type TNavItem = {
   to: string;
@@ -30,7 +30,7 @@ const NAV_ITEMS: TNavItem[] = [
   { to: "/sort", label: "Sort" },
   { to: "/merge", label: "Merge" },
   { to: "/merge-nested", label: "Merge Nested" },
-  { to: "/merge-with-add", label: "Merge with Add" },
+  { to: "/add", label: "Add" },
 ];
 
 const useAppModules = () => {
@@ -129,7 +129,7 @@ const AppRoutes = memo(() => (
     <Route path="/sort" element={<SortPage />} />
     <Route path="/merge" element={<MergePage />} />
     <Route path="/merge-nested" element={<MergeNestedPage />} />
-    <Route path="/merge-with-add" element={<MergeWithAddPage />} />
+    <Route path="/add" element={<AddPage />} />
     <Route path="*" element={<Navigate to="/search" replace />} />
   </Routes>
 ));

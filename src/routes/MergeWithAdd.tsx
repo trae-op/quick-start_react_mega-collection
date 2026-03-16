@@ -7,8 +7,7 @@ import {
   startTransition,
   memo,
 } from "react";
-import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { defaultLimit, type User, cities, ages } from "../data/users";
+import { defaultLimit } from "../data/users";
 import AddModal from "../components/AddModal";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
@@ -55,55 +54,29 @@ const AddUser = memo((props: TAddUserProps) => {
   );
 });
 
-const MergeWithAddPage = memo(() => {
-  const engine = useDemoEngine("mergeWithAdd");
-  const [query, setQuery] = useState("");
+const AddPage = memo(() => {
+  const engine = useDemoEngine("add");
   const [dataVersion, setDataVersion] = useState(0);
-  const [selectedCities, setSelectedCities] = useState<string[]>([]);
-  const [selectedAges, setSelectedAges] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>("createdAt");
   const [sortDirection, setSortDirection] = useState<TSortDirection>("desc");
 
   const [isComputePending, startComputeTransition] = useTransition();
 
-  const deferredQuery = useDeferredValue(query);
-  const deferredCities = useDeferredValue(selectedCities);
-  const deferredAges = useDeferredValue(selectedAges);
   const deferredSortField = useDeferredValue(sortField);
   const deferredSortDirection = useDeferredValue(sortDirection);
 
   const isPending =
     isComputePending ||
-    deferredCities !== selectedCities ||
-    deferredAges !== selectedAges ||
     deferredSortField !== sortField ||
-    deferredSortDirection !== sortDirection ||
-    deferredQuery !== query;
+    deferredSortDirection !== sortDirection;
 
-  const result = useMemo(() => {
-    const criteria: FilterCriterion<User>[] = [];
-    const trimmedQuery = deferredQuery.trim();
-
-    if (deferredCities.length > 0) {
-      criteria.push({ field: "city", values: deferredCities });
-    }
-    if (deferredAges.length > 0) {
-      criteria.push({ field: "age", values: deferredAges });
-    }
-
-    return engine
-      .search(trimmedQuery)
-      .filter(criteria)
-      .sort([{ field: deferredSortField, direction: deferredSortDirection }]);
-  }, [
-    dataVersion,
-    engine,
-    deferredQuery,
-    deferredCities,
-    deferredAges,
-    deferredSortField,
-    deferredSortDirection,
-  ]);
+  const result = useMemo(
+    () =>
+      engine.sort([
+        { field: deferredSortField, direction: deferredSortDirection },
+      ]),
+    [dataVersion, engine, deferredSortField, deferredSortDirection],
+  );
 
   const handleAddUser = useCallback(
     ({ name, age, city }: { name: string; age: number; city: string }) => {
@@ -125,18 +98,6 @@ const MergeWithAddPage = memo(() => {
     [engine, startComputeTransition],
   );
 
-  const toggleCity = useCallback((city: string) => {
-    setSelectedCities((prev) =>
-      prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city],
-    );
-  }, []);
-
-  const toggleAge = useCallback((age: number) => {
-    setSelectedAges((prev) =>
-      prev.includes(age) ? prev.filter((a) => a !== age) : [...prev, age],
-    );
-  }, []);
-
   const onChangeSortField = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
       setSortField(event.target.value as SortField);
@@ -153,9 +114,6 @@ const MergeWithAddPage = memo(() => {
 
   const resetPipeline = useCallback(() => {
     startTransition(() => {
-      setQuery("");
-      setSelectedCities([]);
-      setSelectedAges([]);
       setSortField("createdAt");
       setSortDirection("desc");
     });
@@ -178,58 +136,6 @@ const MergeWithAddPage = memo(() => {
           </>
         }
       />
-
-      <div className="mt-4">
-        <p className="text-sm font-medium text-slate-800">Search</p>
-        <input
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search by name or city…"
-          className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
-        />
-      </div>
-
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <div>
-          <p className="text-sm font-medium text-slate-800">Filter by city</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {cities.map((city) => (
-              <button
-                key={city}
-                type="button"
-                onClick={() => toggleCity(city)}
-                className={`rounded-full border px-3 py-1 text-xs ${
-                  selectedCities.includes(city)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
-                }`}
-              >
-                {city}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <p className="text-sm font-medium text-slate-800">Filter by age</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {ages.map((age) => (
-              <button
-                key={age}
-                type="button"
-                onClick={() => toggleAge(age)}
-                className={`rounded-full border px-3 py-1 text-xs ${
-                  selectedAges.includes(age)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
-                }`}
-              >
-                {age}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
         <div className="flex items-end">
@@ -273,4 +179,4 @@ const MergeWithAddPage = memo(() => {
   );
 });
 
-export default MergeWithAddPage;
+export default AddPage;
