@@ -11,16 +11,31 @@ const OPERATOR_REGEX =
   /(?:=>|===|!==|==|!=|<=|>=|&&|\|\||\+|\-|\*|\/|%|\?|:|\.|,|;|\(|\)|\{|\}|\[|\]|=)/g;
 
 function operatorClass(op: string) {
-  if (op === ">>") return "text-indigo-600"; // not used but reserved for future
-  if (op === "=>") return "text-rose-600";
+  if (op === ">>") return "text-indigo-600 dark:text-indigo-400 font-semibold"; // not used but reserved for future
+  if (op === "=>") return "text-rose-600 dark:text-rose-400 font-semibold";
   if (op === "===" || op === "!==" || op === "==" || op === "!=")
-    return "text-emerald-600";
-  if (op === "<=" || op === ">=") return "text-emerald-600";
-  if (op === "&&" || op === "||") return "text-purple-600";
+    return "text-emerald-600 dark:text-emerald-400 font-semibold";
+  if (op === "<=" || op === ">=")
+    return "text-emerald-600 dark:text-emerald-400 font-semibold";
+  if (op === "&&" || op === "||")
+    return "text-purple-600 dark:text-purple-400 font-semibold";
   if (op === "+" || op === "-" || op === "*" || op === "/" || op === "%")
-    return "text-amber-600";
-  if (op === "=") return "text-sky-600";
-  return "text-slate-500";
+    return "text-amber-600 dark:text-amber-400 font-semibold";
+  if (op === "=") return "text-sky-600 dark:text-sky-300 font-semibold";
+  if (op === ".") return "text-sky-500 dark:text-sky-300";
+  if (op === ",") return "text-emerald-500 dark:text-emerald-300";
+  if (op === ";") return "text-pink-500 dark:text-pink-300";
+  if (op === ":") return "text-fuchsia-500 dark:text-fuchsia-300";
+  if (
+    op === "(" ||
+    op === ")" ||
+    op === "{" ||
+    op === "}" ||
+    op === "[" ||
+    op === "]"
+  )
+    return "text-slate-600 dark:text-slate-300";
+  return "text-slate-700 dark:text-slate-200";
 }
 
 function tokenizeLine(line: string) {
@@ -51,9 +66,9 @@ export default function Code({ code, inline }: CodeProps) {
   const lines = codeString.split("\n");
 
   const inlineClassName =
-    "rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs";
+    "rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-900 dark:bg-slate-900 dark:text-slate-100";
   const blockClassName =
-    "relative rounded bg-slate-100 p-3 font-mono text-xs overflow-x-auto";
+    "relative rounded bg-slate-100 p-3 font-mono text-xs text-slate-900 dark:bg-slate-900 dark:text-slate-100 overflow-x-auto";
 
   const lineElements = lines.map((line, lineIndex) => (
     <div key={lineIndex} className="whitespace-pre">
