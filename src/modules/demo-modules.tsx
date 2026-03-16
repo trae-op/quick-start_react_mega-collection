@@ -198,7 +198,7 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     filterByPreviousResult: true,
     search: { fields: ["name", "city"], minQueryLength: 2 },
     filter: { fields: ["city", "age"] },
-    sort: { fields: ["age", "name", "city"] },
+    sort: { fields: ["age", "name", "city", "createdAt", "updatedAt"] },
   });
 
   const mergeWithAdd = new MergeEngines<User>({
@@ -207,7 +207,7 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     filterByPreviousResult: true,
     search: { fields: ["name", "city"], minQueryLength: 2 },
     filter: { fields: ["city", "age"] },
-    sort: { fields: ["age", "name", "city"] },
+    sort: { fields: ["age", "name", "city", "createdAt", "updatedAt"] },
   });
 
   const mergeNested = new MergeEngines<UserWithOrders>({

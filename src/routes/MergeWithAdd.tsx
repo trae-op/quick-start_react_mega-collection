@@ -8,7 +8,6 @@ import {
   memo,
 } from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import type { MergeEngines } from "@devisfuture/mega-collection/merge";
 import { defaultLimit, type User, cities, ages } from "../data/users";
 import AddModal from "../components/AddModal";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
@@ -157,8 +156,8 @@ const MergeWithAddPage = memo(() => {
       setQuery("");
       setSelectedCities([]);
       setSelectedAges([]);
-      setSortField("age");
-      setSortDirection("asc");
+      setSortField("createdAt");
+      setSortDirection("desc");
     });
   }, []);
 
