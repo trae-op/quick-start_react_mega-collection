@@ -121,7 +121,7 @@ const AddPage = memo(() => {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <PageHeader
-        title="Merge"
+        title="Add"
         description={
           <>
             You can add new users via the "Add user" button to update the
