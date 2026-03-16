@@ -7,7 +7,6 @@ import {
   startTransition,
   memo,
 } from "react";
-import { defaultLimit } from "../data/users";
 import AddModal from "../components/AddModal";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
@@ -125,14 +124,8 @@ const AddPage = memo(() => {
         title="Merge"
         description={
           <>
-            Combines <strong>TextSearchEngine</strong>,{" "}
-            <strong>FilterEngine</strong>, and <strong>SortEngine</strong>{" "}
-            through a single <strong>MergeEngines</strong> facade. The demo uses
-            the chain API directly:{" "}
-            <code>search(query).filter(criteria).sort(...)</code>
-            on {defaultLimit} users, and you can add new users via the "Add
-            user" button (and delete selected entries) to update the collection
-            in real time.
+            You can add new users via the "Add user" button to update the
+            collection in real time.
           </>
         }
       />
