@@ -93,11 +93,13 @@ function MergeNestedPage() {
         title="Merge Nested"
         description={
           <>
-            Combines nested <strong>search</strong>, <strong>filter</strong>,
-            and <strong>sort</strong> with dot-path support for
-            <code>orders.status</code> through chained
-            <code> MergeEngines </code>
-            calls.
+            Search, filter, and sort nested users (including{" "}
+            <code>orders.status</code>) via <strong>MergeEngines</strong>.
+            <br />
+            <code>{`engine
+  .search("query...")
+  .filter([{ field: "orders.status", values: ["pending"] }])
+  .sort([{ field: "age", direction: "asc" }]);`}</code>
           </>
         }
       />

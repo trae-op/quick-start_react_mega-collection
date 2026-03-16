@@ -36,8 +36,10 @@ function SortPage() {
         title="Sort"
         description={
           <>
-            Uses <strong>SortEngine</strong> with prepared indexes for
-            single-field sorting over the stored 100K dataset.
+            Sort users by a chosen field and direction using{" "}
+            <strong>SortEngine</strong>.
+            <br />
+            <code>{`engine.sort([{ field: "age", direction: "asc" }]);`}</code>
           </>
         }
       />

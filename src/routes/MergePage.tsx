@@ -1,6 +1,6 @@
 import { useDeferredValue, useMemo, useState } from "react";
 import type { FilterCriterion } from "@devisfuture/mega-collection/filter";
-import { defaultLimit, type User, cities, ages } from "../data/users";
+import { type User, cities, ages } from "../data/users";
 import VirtualizedUserCards from "../components/VirtualizedUserCards";
 import ShowingCount from "../components/ShowingCount";
 import PageHeader from "../components/PageHeader";
@@ -92,12 +92,13 @@ function MergePage() {
         title="Merge"
         description={
           <>
-            Combines <strong>TextSearchEngine</strong>,{" "}
-            <strong>FilterEngine</strong>, and <strong>SortEngine</strong>{" "}
-            through a single <strong>MergeEngines</strong> facade. The demo uses
-            the chain API directly:{" "}
-            <code>search(query).filter(criteria).sort(...)</code>
-            on {defaultLimit} users.
+            Search, filter, and sort users in one chain using{" "}
+            <strong>MergeEngines</strong>.
+            <br />
+            <code>{`engine
+  .search("query...")
+  .filter([{ field: "city", values: ["Chicago"] }])
+  .sort([{ field: "createdAt", direction: "desc" }]);`}</code>
           </>
         }
       />

@@ -36,12 +36,11 @@ function SearchPage() {
         title="Search"
         description={
           <>
-            Uses <strong>TextSearchEngine</strong> with stored data and indexed
-            <code> name </code>
-            and
-            <code> city </code>
-            fields. Switch between <code>search(query)</code> and
-            <code>search(field, query)</code>.
+            Search users by <code>name</code> or <code>city</code> using{" "}
+            <strong>TextSearchEngine</strong>.
+            <br />
+            <code>{`const search = new TextSearchEngine<User>({ data: users, fields: ["city", "name"], minQueryLength: 2 });
+engine.search("query...");`}</code>
           </>
         }
       />

@@ -61,10 +61,10 @@ function FilterPage() {
         title="Filter"
         description={
           <>
-            Uses <strong>FilterEngine</strong> with stored data,
-            <code>fields</code>
-            for <code>city</code> and <code>age</code>, plus
-            <code>filter(criteria)</code> over the engine memory.
+            Filter users by <code>city</code> and <code>age</code> using{" "}
+            <strong>FilterEngine</strong>.
+            <br />
+            <code>{`engine.filter([{ field: "city", values: ["Chicago"] }, { field: "age", values: [30] }]);`}</code>
           </>
         }
       />

@@ -112,12 +112,10 @@ function FilterRemovePage() {
         title="Filter Remove"
         description={
           <>
-            Uses <strong>FilterEngine</strong> with <code>exclude</code> on
-            <code>id</code> so checked users are removed with
-            <code>
-              filter([{`{`} field: "id", exclude: [...] {`}`}])
-            </code>
-            .
+            Remove checked users by excluding their <code>id</code> via{" "}
+            <strong>FilterEngine</strong>.
+            <br />
+            <code>{`engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}</code>
           </>
         }
       />

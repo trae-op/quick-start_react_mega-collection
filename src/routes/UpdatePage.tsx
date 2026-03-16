@@ -126,12 +126,9 @@ function UpdatePage() {
         title="Update"
         description={
           <>
-            Uses <strong>TextSearchEngine</strong> with stored data and indexed
-            <code> name </code>
-            and
-            <code> city </code>
-            fields. Switch between <code>search(query)</code> and
-            <code>search(field, query)</code>.
+            Search users and update a selected record by <code>id</code>.
+            <br />
+            <code>{`engine.update({ field: "id", data: { ...user, name: "…" } });`}</code>
           </>
         }
       />

@@ -85,8 +85,10 @@ function FilterNestedPage() {
         title="Filter Nested"
         description={
           <>
-            Uses <strong>FilterEngine</strong> with indexed top-level fields and
-            nested criteria through <code>orders.status</code>.
+            Filter users and their orders by status using nested{" "}
+            <strong>FilterEngine</strong> criteria.
+            <br />
+            <code>{`engine.filter([{ field: "orders.status", values: ["pending"] }]);`}</code>
           </>
         }
       />

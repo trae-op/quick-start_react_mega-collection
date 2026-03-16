@@ -124,8 +124,9 @@ const AddPage = memo(() => {
         title="Add"
         description={
           <>
-            You can add new users via the "Add user" button to update the
-            collection in real time.
+            Add new users to the collection and keep the list sorted.
+            <br />
+            <code>{`engine.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: new Date() }]);`}</code>
           </>
         }
       />

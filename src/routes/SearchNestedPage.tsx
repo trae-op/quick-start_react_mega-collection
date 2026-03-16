@@ -34,8 +34,10 @@ function SearchNestedPage() {
         title="Search Nested"
         description={
           <>
-            Uses <strong>TextSearchEngine</strong> with indexed flat fields and
-            nested dot-path search through <code>orders.status</code>.
+            Search nested fields like <code>orders.status</code> using{" "}
+            <strong>TextSearchEngine</strong>.
+            <br />
+            <code>engine.search("orders.status", "pending");</code>
           </>
         }
       />
