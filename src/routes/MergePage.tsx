@@ -97,10 +97,23 @@ function MergePage() {
             <strong>MergeEngines</strong>.
             <br />
             <Code
-              code={`engine
+              code={`
+import { MergeEngines } from "@devisfuture/mega-collection/merge";
+...
+const merge = new MergeEngines<User>({
+  imports: [TextSearchEngine, SortEngine, FilterEngine],
+  data: users,
+  filterByPreviousResult: true,
+  search: { fields: ["name", "city"], minQueryLength: 2 },
+  filter: { fields: ["city", "age"] },
+  sort: { fields: ["age", "name", "city", "createdAt", "updatedAt"] },
+});
+...
+engine
   .search("query...")
   .filter([{ field: "city", values: ["Chicago"] }])
-  .sort([{ field: "createdAt", direction: "desc" }]);`}
+  .sort([{ field: "createdAt", direction: "desc" }]);
+            `}
             />
           </>
         }

@@ -41,7 +41,16 @@ function SearchPage() {
             <strong>TextSearchEngine</strong>.
             <br />
             <Code
-              code={`const search = new TextSearchEngine<User>({ data: users, fields: ["city", "name"], minQueryLength: 2 });\nengine.search("query...");`}
+              code={`
+import { TextSearchEngine } from "@devisfuture/mega-collection/search";
+...
+const search = new TextSearchEngine<User>({
+  data: users,
+  fields: ["city", "name"],
+  minQueryLength: 2,
+});
+...
+const search = new TextSearchEngine<User>({ data: users, fields: ["city", "name"], minQueryLength: 2 });\nengine.search("query...");`}
             />
           </>
         }

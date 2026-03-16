@@ -1,5 +1,5 @@
 import { createContext, useContext, type ReactNode } from "react";
-import { MergeEngines } from "@devisfuture/mega-collection";
+import { MergeEngines } from "@devisfuture/mega-collection/merge";
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
 import { TextSearchEngine } from "@devisfuture/mega-collection/search";
 import { SortEngine } from "@devisfuture/mega-collection/sort";
@@ -24,7 +24,7 @@ export type DemoEngineRegistry = {
   merge: MergeEngines<User>;
   filterMutableExclude: FilterEngine<User>;
   mergeNested: MergeEngines<UserWithOrders>;
-  add: MergeEngines<User>;
+  add: SortEngine<User>;
   update: MergeEngines<User>;
 };
 
@@ -202,13 +202,9 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
     sort: { fields: ["age", "name", "city", "createdAt", "updatedAt"] },
   });
 
-  const add = new MergeEngines<User>({
-    imports: [TextSearchEngine, SortEngine, FilterEngine],
+  const add = new SortEngine<User>({
     data: users,
-    filterByPreviousResult: true,
-    search: { fields: ["name", "city"], minQueryLength: 2 },
-    filter: { fields: ["city", "age"] },
-    sort: { fields: ["age", "name", "city", "createdAt", "updatedAt"] },
+    fields: ["age", "name", "city", "createdAt", "updatedAt"],
   });
 
   const update = new TextSearchEngine<User>({

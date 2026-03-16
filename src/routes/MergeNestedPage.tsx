@@ -98,7 +98,26 @@ function MergeNestedPage() {
             <code>orders.status</code>) via <strong>MergeEngines</strong>.
             <br />
             <Code
-              code={`engine
+              code={`
+import { MergeEngines } from "@devisfuture/mega-collection/merge";
+...
+const mergeNested = new MergeEngines<UserWithOrders>({
+  imports: [TextSearchEngine, FilterEngine, SortEngine],
+  data: nestedUsers,
+  filterByPreviousResult: true,
+  search: {
+    fields: ["name", "city"],
+    minQueryLength: 2,
+    nestedFields: ["orders.status"],
+  },
+  filter: {
+    fields: ["city", "age"],
+    nestedFields: ["orders.status"],
+  },
+  sort: { fields: ["age", "name", "city"] },
+});
+...         
+engine
   .search("query...")
   .filter([{ field: "orders.status", values: ["pending"] }])
   .sort([{ field: "age", direction: "asc" }]);`}

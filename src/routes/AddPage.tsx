@@ -128,7 +128,15 @@ const AddPage = memo(() => {
             Add new users to the collection and keep the list sorted.
             <br />
             <Code
-              code={`engine.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: new Date() }]);`}
+              code={`
+import { SortEngine } from "@devisfuture/mega-collection/sort";
+...
+const sort = new SortEngine<User>({
+  data: users,
+  fields: ["age", "name", "city", "createdAt", "updatedAt"],
+});
+...
+sort.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: new Date() }]);`}
             />
           </>
         }

@@ -66,7 +66,16 @@ function FilterPage() {
             <strong>FilterEngine</strong>.
             <br />
             <Code
-              code={`engine.filter([{ field: "city", values: ["Chicago"] }, { field: "age", values: [30] }]);`}
+              code={`
+import { FilterEngine } from "@devisfuture/mega-collection/filter";
+...
+const filter = new FilterEngine<User>({
+  data: users,
+  fields: ["id", "city", "age"],
+  filterByPreviousResult: true,
+});
+...
+engine.filter([{ field: "city", values: ["Chicago"] }, { field: "age", values: [30] }]);`}
             />
           </>
         }

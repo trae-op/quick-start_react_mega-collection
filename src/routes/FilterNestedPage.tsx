@@ -90,7 +90,17 @@ function FilterNestedPage() {
             <strong>FilterEngine</strong> criteria.
             <br />
             <Code
-              code={`engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
+              code={`
+import { FilterEngine } from "@devisfuture/mega-collection/filter";
+...
+const filterNested = new FilterEngine<UserWithOrders>({
+  data: nestedUsers,
+  fields: ["city", "age"],
+  nestedFields: ["orders.status"],
+  filterByPreviousResult: true,
+});
+...           
+engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
             />
           </>
         }

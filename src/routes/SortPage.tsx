@@ -40,7 +40,18 @@ function SortPage() {
             Sort users by a chosen field and direction using{" "}
             <strong>SortEngine</strong>.
             <br />
-            <Code code={`engine.sort([{ field: "age", direction: "asc" }]);`} />
+            <Code
+              code={`
+import { SortEngine } from "@devisfuture/mega-collection/sort";
+...
+const sort = new SortEngine<User>({
+  data: users,
+  fields: ["age", "name", "city"],
+});
+...
+engine.sort([{ field: "age", direction: "asc" }]);
+              `}
+            />
           </>
         }
       />

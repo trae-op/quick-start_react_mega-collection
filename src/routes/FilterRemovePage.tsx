@@ -117,7 +117,17 @@ function FilterRemovePage() {
             <strong>FilterEngine</strong>.
             <br />
             <Code
-              code={`engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
+              code={`
+import { FilterEngine } from "@devisfuture/mega-collection/filter";
+...
+const filterMutableExclude = new FilterEngine<User>({
+  data: users,
+  fields: ["id", "city", "age"],
+  filterByPreviousResult: true,
+  mutableExcludeField: "id",
+});
+...
+engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
             />
           </>
         }

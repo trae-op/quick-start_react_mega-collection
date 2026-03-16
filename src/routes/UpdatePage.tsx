@@ -130,7 +130,17 @@ function UpdatePage() {
             Search users and update a selected record by <code>id</code>.
             <br />
             <Code
-              code={`engine.update({ field: "id", data: { ...user, name: "…" } });`}
+              code={`
+import { TextSearchEngine } from "@devisfuture/mega-collection/search";
+...
+const update = new TextSearchEngine<User>({
+    data: users,
+    fields: ["name", "city"],
+    minQueryLength: 2,
+});
+...
+engine.update({ field: "id", data: { ...user, name: "…" } });
+                `}
             />
           </>
         }

@@ -38,7 +38,19 @@ function SearchNestedPage() {
             Search nested fields like <code>orders.status</code> using{" "}
             <strong>TextSearchEngine</strong>.
             <br />
-            <Code code={`engine.search("orders.status", "pending");`} />
+            <Code
+              code={`
+import { TextSearchEngine } from "@devisfuture/mega-collection/search";
+...
+const searchNested = new TextSearchEngine<UserWithOrders>({
+  data: nestedUsers,
+  fields: ["name", "city"],
+  nestedFields: ["orders.status"],
+  minQueryLength: 2,
+});
+...
+engine.search("orders.status", "pending");`}
+            />
           </>
         }
       />
