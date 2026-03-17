@@ -16,11 +16,17 @@ import {
 } from "./modules/demo-modules";
 import AddPage from "./routes/AddPage";
 import UpdatePage from "./routes/UpdatePage";
+import { defaultLimit } from "./data/users";
 
 type TNavItem = {
   to: string;
   label: string;
 };
+
+const formatter = new Intl.NumberFormat("en-US", {
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
 
 const NAV_ITEMS: TNavItem[] = [
   { to: "/search", label: "Search" },
@@ -109,7 +115,7 @@ const AppLoading = memo(
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
         <div className="space-y-1">
           <h1 className="text-lg font-semibold text-slate-900">
-            Loading 100K demo records
+            Loading {formatter.format(defaultLimit)} demo records
           </h1>
           <p className="text-sm text-slate-600">{message}</p>
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
