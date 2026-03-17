@@ -33,9 +33,10 @@ function UserRow({
       >
         <p className="text-sm font-medium text-slate-900">{user.name}</p>
         <p className="text-xs text-slate-600">
-          {user.city} • {user.age} yo • Dates:{" "}
-          {user?.createdAt?.toLocaleDateString()} -{" "}
-          {user?.updatedAt?.toLocaleDateString()}
+          {user.city} • {user.age} yo •{" "}
+          {user.createdAt !== undefined && user.updatedAt !== undefined
+            ? `created at: ${user.createdAt.toLocaleDateString()} - updated at: ${user.updatedAt.toLocaleDateString()}`
+            : "N/A"}
         </p>
       </article>
     </div>

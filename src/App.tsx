@@ -24,15 +24,15 @@ type TNavItem = {
 
 const NAV_ITEMS: TNavItem[] = [
   { to: "/search", label: "Search" },
-  { to: "/search-nested", label: "Search Nested" },
   { to: "/filter", label: "Filter" },
-  { to: "/filter-remove", label: "Filter Remove" },
-  { to: "/filter-nested", label: "Filter Nested" },
   { to: "/sort", label: "Sort" },
   { to: "/merge", label: "Merge" },
+  { to: "/search-nested", label: "Search Nested" },
+  { to: "/filter-nested", label: "Filter Nested" },
   { to: "/merge-nested", label: "Merge Nested" },
   { to: "/add", label: "Add" },
   { to: "/update", label: "Update" },
+  { to: "/delete", label: "Delete" },
 ];
 
 const useAppModules = () => {
@@ -126,7 +126,7 @@ const AppRoutes = memo(() => (
     <Route path="/search" element={<SearchPage />} />
     <Route path="/search-nested" element={<SearchNestedPage />} />
     <Route path="/filter" element={<FilterPage />} />
-    <Route path="/filter-remove" element={<FilterRemovePage />} />
+    <Route path="/delete" element={<FilterRemovePage />} />
     <Route path="/filter-nested" element={<FilterNestedPage />} />
     <Route path="/sort" element={<SortPage />} />
     <Route path="/merge" element={<MergePage />} />
