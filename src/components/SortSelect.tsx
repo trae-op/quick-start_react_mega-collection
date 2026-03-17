@@ -15,7 +15,7 @@ export const SortSelect = memo(
       <select
         value={field}
         onChange={onChange}
-        className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+        className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
       >
         {sortList.map((option) => (
           <option key={option.value} value={option.value}>

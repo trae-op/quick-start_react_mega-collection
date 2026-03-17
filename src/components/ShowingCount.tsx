@@ -12,7 +12,7 @@ const ShowingCount = ({
   totalCount = defaultLimit,
 }: ShowingCountProps) => {
   return (
-    <p className="mt-3 text-xs text-slate-500">
+    <p className="mt-3 text-xs text-slate-400">
       Showing {count.toLocaleString()} of {totalCount.toLocaleString()}{" "}
       {itemName}
     </p>

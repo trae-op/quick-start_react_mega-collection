@@ -32,7 +32,7 @@ function SortPage() {
   };
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-xl border border-slate-700 bg-slate-950 p-4 shadow-sm">
       <PageHeader
         title="Sort"
         description={
@@ -62,7 +62,7 @@ engine.sort([{ field: "age", direction: "asc" }]);
         <select
           value={direction}
           onChange={onChangeDirection}
-          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+          className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
         >
           <option value="asc">asc</option>
           <option value="desc">desc</option>

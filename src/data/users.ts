@@ -49,7 +49,7 @@ export const ages = [22, 26, 30, 34, 38, 42];
 
 export const orderStatuses: OrderStatus[] = ["pending", "delivered"];
 
-export const defaultLimit = 200000;
+export const defaultLimit = 100000;
 
 const DEFAULT_CHUNK_SIZE = 5000;
 

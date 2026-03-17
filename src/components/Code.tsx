@@ -104,7 +104,7 @@ export default function Code({ code, inline }: CodeProps) {
       <button
         type="button"
         onClick={onCopy}
-        className="absolute cursor-pointer right-2 top-2 z-10 rounded bg-white/80 px-2 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur transition hover:bg-white"
+        className="absolute cursor-pointer right-2 top-2 z-10 rounded bg-slate-900/80 px-2 py-1 text-xs font-medium text-slate-100 shadow-sm backdrop-blur transition hover:bg-slate-800"
       >
         {copied ? "Copied" : "Copy"}
       </button>

@@ -89,7 +89,7 @@ function MergeNestedPage() {
   };
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-xl border border-slate-700 bg-slate-950 p-4 shadow-sm">
       <PageHeader
         title="Merge Nested"
         description={
@@ -127,18 +127,18 @@ engine
       />
 
       <div className="mt-4">
-        <p className="text-sm font-medium text-slate-800">Search</p>
+        <p className="text-sm font-medium text-slate-100">Search</p>
         <input
           value={query}
           onChange={searchQuery}
           placeholder="Search name, city, or order status..."
-          className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
+          className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:ring-2 focus:ring-slate-600"
         />
       </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div>
-          <p className="text-sm font-medium text-slate-800">Cities</p>
+          <p className="text-sm font-medium text-slate-100">Cities</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {cities.map((city) => (
               <button
@@ -153,8 +153,8 @@ engine
                 }
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedCities.includes(city)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
+                    ? "border-slate-500 bg-slate-700 text-white"
+                    : "border-slate-700 bg-slate-900 text-slate-100"
                 }`}
               >
                 {city}
@@ -164,7 +164,7 @@ engine
         </div>
 
         <div>
-          <p className="text-sm font-medium text-slate-800">Ages</p>
+          <p className="text-sm font-medium text-slate-100">Ages</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {ages.map((age) => (
               <button
@@ -179,8 +179,8 @@ engine
                 }
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedAges.includes(age)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
+                    ? "border-slate-500 bg-slate-700 text-white"
+                    : "border-slate-700 bg-slate-900 text-slate-100"
                 }`}
               >
                 {age}
@@ -190,7 +190,7 @@ engine
         </div>
 
         <div>
-          <p className="text-sm font-medium text-slate-800">Order status</p>
+          <p className="text-sm font-medium text-slate-100">Order status</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {orderStatuses.map((status) => (
               <button
@@ -205,8 +205,8 @@ engine
                 }
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedStatuses.includes(status)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
+                    ? "border-slate-500 bg-slate-700 text-white"
+                    : "border-slate-700 bg-slate-900 text-slate-100"
                 }`}
               >
                 {status}
@@ -218,19 +218,18 @@ engine
 
       <div className="mt-4 flex flex-wrap gap-3">
         <div>
-          <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
-
+          <p className="mb-1 text-sm font-medium text-slate-100">Sort field</p>
           <SortSelect onChange={onChangeSortField} field={sortField} />
         </div>
 
         <div>
-          <p className="mb-1 text-sm font-medium text-slate-800">Direction</p>
+          <p className="mb-1 text-sm font-medium text-slate-100">Direction</p>
           <select
             value={sortDirection}
             onChange={(event) =>
               setSortDirection(event.target.value as SortDirection)
             }
-            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+            className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
           >
             <option value="asc">asc</option>
             <option value="desc">desc</option>
@@ -241,7 +240,7 @@ engine
           <button
             type="button"
             onClick={resetPipeline}
-            className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+            className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
           >
             Reset pipeline
           </button>

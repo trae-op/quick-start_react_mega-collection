@@ -29,10 +29,10 @@ function UserRow({
     <div style={style} className="px-0.5 py-1">
       <article
         {...ariaAttributes}
-        className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+        className="rounded-lg border border-slate-700 bg-slate-900 p-3"
       >
-        <p className="text-sm font-medium text-slate-900">{user.name}</p>
-        <p className="text-xs text-slate-600">
+        <p className="text-sm font-medium text-slate-100">{user.name}</p>
+        <p className="text-xs text-slate-400">
           {user.city} • {user.age} yo
         </p>
         <p className="mt-1 text-xs text-slate-500">
@@ -48,14 +48,14 @@ function VirtualizedNestedUserCards({
 }: VirtualizedNestedUserCardsProps) {
   if (items.length === 0) {
     return (
-      <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+      <div className="mt-4 rounded-lg border border-slate-700 bg-slate-950 p-4 text-sm text-slate-400">
         No users found.
       </div>
     );
   }
 
   return (
-    <div className="mt-4 h-[360px] rounded-lg border border-slate-200 bg-white p-2">
+    <div className="mt-4 h-[360px] rounded-lg border border-slate-700 bg-slate-950 p-2">
       <AutoSizer
         renderProp={({ height, width }) => {
           if (!height || !width) {

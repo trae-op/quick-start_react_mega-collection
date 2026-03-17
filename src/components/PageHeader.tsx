@@ -8,8 +8,8 @@ interface PageHeaderProps {
 const PageHeader: React.FC<PageHeaderProps> = ({ title, description }) => {
   return (
     <>
-      <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
-      <div className="mt-1 text-sm text-slate-600">{description}</div>
+      <h1 className="text-xl font-semibold text-slate-100">{title}</h1>
+      <div className="mt-1 text-sm text-slate-300">{description}</div>
     </>
   );
 };

@@ -94,17 +94,17 @@ function UpdateModal({ onCancel, onUpdate, item }: ModalProps) {
       onClick={handleBackdropClick}
       role="presentation"
     >
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
+      <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-950 p-5 shadow-2xl">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-100">
             {item ? "Update user" : "Add user"}
           </h2>
-          <p className="mt-1 text-sm text-slate-600">Update the user details</p>
+          <p className="mt-1 text-sm text-slate-300">Update the user details</p>
         </div>
 
         <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
-          <label className="block text-sm text-slate-700">
-            <span className="mb-1 block font-medium text-slate-900">Name</span>
+          <label className="block text-sm text-slate-300">
+            <span className="mb-1 block font-medium text-slate-100">Name</span>
             <input
               autoFocus
               type="text"
@@ -115,13 +115,13 @@ function UpdateModal({ onCancel, onUpdate, item }: ModalProps) {
                   name: event.target.value,
                 }))
               }
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-slate-500"
               placeholder="Enter a user name"
             />
           </label>
 
-          <label className="block text-sm text-slate-700">
-            <span className="mb-1 block font-medium text-slate-900">Age</span>
+          <label className="block text-sm text-slate-300">
+            <span className="mb-1 block font-medium text-slate-100">Age</span>
             <select
               value={formValues.age}
               onChange={(event) =>
@@ -130,7 +130,7 @@ function UpdateModal({ onCancel, onUpdate, item }: ModalProps) {
                   age: event.target.value,
                 }))
               }
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-slate-500"
             >
               {ages.map((age) => (
                 <option key={age} value={age}>
@@ -140,8 +140,8 @@ function UpdateModal({ onCancel, onUpdate, item }: ModalProps) {
             </select>
           </label>
 
-          <label className="block text-sm text-slate-700">
-            <span className="mb-1 block font-medium text-slate-900">City</span>
+          <label className="block text-sm text-slate-300">
+            <span className="mb-1 block font-medium text-slate-100">City</span>
             <select
               value={formValues.city}
               onChange={(event) =>
@@ -150,7 +150,7 @@ function UpdateModal({ onCancel, onUpdate, item }: ModalProps) {
                   city: event.target.value,
                 }))
               }
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-slate-500"
             >
               {cities.map((city) => (
                 <option key={city} value={city}>
@@ -164,7 +164,7 @@ function UpdateModal({ onCancel, onUpdate, item }: ModalProps) {
             <button
               type="button"
               onClick={onCancel}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-50"
+              className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 transition hover:bg-slate-800"
             >
               Cancel
             </button>

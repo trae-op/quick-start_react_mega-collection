@@ -120,7 +120,7 @@ const AddPage = memo(() => {
   }, []);
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-xl border border-slate-700 bg-slate-950 p-4 shadow-sm">
       <PageHeader
         title="Add"
         description={
@@ -148,16 +148,16 @@ sort.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: n
         </div>
 
         <div>
-          <p className="mb-1 text-sm font-medium text-slate-800">Sort field</p>
+          <p className="mb-1 text-sm font-medium text-slate-100">Sort field</p>
           <SortSelect onChange={onChangeSortField} field={sortField} />
         </div>
 
         <div>
-          <p className="mb-1 text-sm font-medium text-slate-800">Direction</p>
+          <p className="mb-1 text-sm font-medium text-slate-100">Direction</p>
           <select
             value={sortDirection}
             onChange={onChangeSortDirection}
-            className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+            className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
           >
             <option value="asc">asc</option>
             <option value="desc">desc</option>
@@ -168,7 +168,7 @@ sort.add([{ id: Date.now(), name, age, city, createdAt: new Date(), updatedAt: n
           <button
             type="button"
             onClick={resetPipeline}
-            className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+            className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
           >
             Reset pipeline
           </button>

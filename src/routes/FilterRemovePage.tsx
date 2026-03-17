@@ -33,19 +33,19 @@ function RemovableUserRow({
     <div style={style} className="px-0.5 py-1">
       <article
         {...ariaAttributes}
-        className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+        className="rounded-lg border border-slate-700 bg-slate-900 p-3"
       >
         <label className="flex cursor-pointer items-start gap-3">
           <input
             type="checkbox"
             checked={checkedIdSet.has(user.id)}
             onChange={() => onToggle(user.id)}
-            className="mt-1 h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-400"
+            className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-slate-100 focus:ring-slate-500"
           />
 
           <div>
-            <p className="text-sm font-medium text-slate-900">{user.name}</p>
-            <p className="text-xs text-slate-600">
+            <p className="text-sm font-medium text-slate-100">{user.name}</p>
+            <p className="text-xs text-slate-400">
               #{user.id} • {user.city} • {user.age} years
             </p>
           </div>
@@ -108,7 +108,7 @@ function FilterRemovePage() {
   };
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-xl border border-slate-700 bg-slate-950 p-4 shadow-sm">
       <PageHeader
         title="Filter Remove"
         description={
@@ -146,7 +146,7 @@ engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
         <button
           type="button"
           onClick={resetRemoved}
-          className="cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 text-sm text-slate-700"
+          className="cursor-pointer rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100"
         >
           Reset collection
         </button>
@@ -155,12 +155,12 @@ engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
       <ShowingCount count={result.length} itemName="users" />
 
       {result.length === 0 ? (
-        <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+        <div className="mt-4 rounded-lg border border-slate-700 bg-slate-950 p-4 text-sm text-slate-400">
           No users left in the collection.
         </div>
       ) : (
         <div
-          className={`mt-4 h-[calc(100vh-300px)] rounded-lg border border-slate-200 bg-white p-2 ${
+          className={`mt-4 h-[calc(100vh-300px)] rounded-lg border border-slate-700 bg-slate-950 p-2 ${
             isPending ? "opacity-30 transition-opacity" : ""
           }`}
         >

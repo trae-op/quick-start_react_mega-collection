@@ -81,7 +81,7 @@ function FilterNestedPage() {
   };
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-xl border border-slate-700 bg-slate-950 p-4 shadow-sm">
       <PageHeader
         title="Filter Nested"
         description={
@@ -110,7 +110,7 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
         <button
           type="button"
           onClick={resetFilters}
-          className="rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+          className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
         >
           Reset filters
         </button>
@@ -118,7 +118,7 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
 
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div>
-          <p className="text-sm font-medium text-slate-800">Cities</p>
+          <p className="text-sm font-medium text-slate-100">Cities</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {cities.map((city) => (
               <button
@@ -127,8 +127,8 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
                 onClick={() => toggleCity(city)}
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedCities.includes(city)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
+                    ? "border-slate-500 bg-slate-700 text-white"
+                    : "border-slate-700 bg-slate-900 text-slate-100"
                 }`}
               >
                 {city}
@@ -138,7 +138,7 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
         </div>
 
         <div>
-          <p className="text-sm font-medium text-slate-800">Ages</p>
+          <p className="text-sm font-medium text-slate-100">Ages</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {ages.map((age) => (
               <button
@@ -147,8 +147,8 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
                 onClick={() => toggleAge(age)}
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedAges.includes(age)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
+                    ? "border-slate-500 bg-slate-700 text-white"
+                    : "border-slate-700 bg-slate-900 text-slate-100"
                 }`}
               >
                 {age}
@@ -158,7 +158,7 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
         </div>
 
         <div>
-          <p className="text-sm font-medium text-slate-800">Order status</p>
+          <p className="text-sm font-medium text-slate-100">Order status</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {orderStatuses.map((status) => (
               <button
@@ -167,8 +167,8 @@ engine.filter([{ field: "orders.status", values: ["pending"] }]);`}
                 onClick={() => toggleStatus(status)}
                 className={`rounded-full border px-3 py-1 text-xs ${
                   selectedStatuses.includes(status)
-                    ? "border-slate-700 bg-slate-700 text-white"
-                    : "border-slate-300 bg-white text-slate-700"
+                    ? "border-slate-500 bg-slate-700 text-white"
+                    : "border-slate-700 bg-slate-900 text-slate-100"
                 }`}
               >
                 {status}
