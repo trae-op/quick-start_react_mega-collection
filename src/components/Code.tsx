@@ -7,32 +7,52 @@ type CodeProps = {
   inline?: boolean;
 };
 
-const OPERATOR_REGEX =
-  /(?:=>|===|!==|==|!=|<=|>=|&&|\|\||\+|\-|\*|\/|%|\?|:|\.|,|;|\(|\)|\{|\}|\[|\]|=)/g;
+const TOKEN_REGEX =
+  /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\/\/.*$)|\b(?:import|from|const|let|var|function|return|new|class|extends|implements|interface|type|as|async|await|if|else|switch|case|break|default|for|while|do|try|catch|finally|throw|null|undefined|true|false|in|of|typeof|instanceof|void|delete|export|default)\b|[0-9]+(?:\.[0-9]+)?\b|=>|===|!==|==|!=|<=|>=|&&|\|\||\+\+|--|[+\-*/%]|\.|,|;|:|\(|\)|\{|\}|\[|\]|=/g;
 
-function operatorClass(op: string) {
-  if (op === ">>") return "text-indigo-600 dark:text-indigo-400 font-semibold"; // not used but reserved for future
-  if (op === "=>") return "text-rose-600 dark:text-rose-400 font-semibold";
-  if (op === "===" || op === "!==" || op === "==" || op === "!=")
-    return "text-emerald-600 dark:text-emerald-400 font-semibold";
-  if (op === "<=" || op === ">=")
-    return "text-emerald-600 dark:text-emerald-400 font-semibold";
-  if (op === "&&" || op === "||")
-    return "text-purple-600 dark:text-purple-400 font-semibold";
-  if (op === "+" || op === "-" || op === "*" || op === "/" || op === "%")
-    return "text-amber-600 dark:text-amber-400 font-semibold";
-  if (op === "=") return "text-sky-600 dark:text-sky-300 font-semibold";
-  if (op === ".") return "text-sky-500 dark:text-sky-300";
-  if (op === ",") return "text-emerald-500 dark:text-emerald-300";
-  if (op === ";") return "text-pink-500 dark:text-pink-300";
-  if (op === ":") return "text-fuchsia-500 dark:text-fuchsia-300";
+function tokenClass(token: string) {
+  if (token.startsWith('"') || token.startsWith("'") || token.startsWith("`"))
+    return "text-amber-600 dark:text-amber-400";
+  if (token.startsWith("//"))
+    return "text-slate-500 dark:text-slate-400 italic";
   if (
-    op === "(" ||
-    op === ")" ||
-    op === "{" ||
-    op === "}" ||
-    op === "[" ||
-    op === "]"
+    /^(?:import|from|const|let|var|function|return|new|class|extends|implements|interface|type|as|async|await|if|else|switch|case|break|default|for|while|do|try|catch|finally|throw|null|undefined|true|false|in|of|typeof|instanceof|void|delete|export|default)$/.test(
+      token,
+    ) ||
+    /<\w+>/.test(token) // TS generics
+  )
+    return "text-sky-600 dark:text-sky-300 font-semibold";
+  if (/^[0-9]+(?:\.[0-9]+)?$/.test(token))
+    return "text-emerald-600 dark:text-emerald-400";
+  if (token === ">>")
+    return "text-indigo-600 dark:text-indigo-400 font-semibold";
+  if (token === "=>") return "text-rose-600 dark:text-rose-400 font-semibold";
+  if (token === "===" || token === "!==" || token === "==" || token === "!=")
+    return "text-emerald-600 dark:text-emerald-400 font-semibold";
+  if (token === "<=" || token === ">=")
+    return "text-emerald-600 dark:text-emerald-400 font-semibold";
+  if (token === "&&" || token === "||")
+    return "text-purple-600 dark:text-purple-400 font-semibold";
+  if (
+    token === "+" ||
+    token === "-" ||
+    token === "*" ||
+    token === "/" ||
+    token === "%"
+  )
+    return "text-amber-600 dark:text-amber-400 font-semibold";
+  if (token === "=") return "text-sky-600 dark:text-sky-300 font-semibold";
+  if (token === ".") return "text-sky-500 dark:text-sky-300";
+  if (token === ",") return "text-emerald-500 dark:text-emerald-300";
+  if (token === ";") return "text-pink-500 dark:text-pink-300";
+  if (token === ":") return "text-fuchsia-500 dark:text-fuchsia-300";
+  if (
+    token === "(" ||
+    token === ")" ||
+    token === "{" ||
+    token === "}" ||
+    token === "[" ||
+    token === "]"
   )
     return "text-slate-600 dark:text-slate-300";
   return "text-slate-700 dark:text-slate-200";
@@ -43,14 +63,16 @@ function tokenizeLine(line: string) {
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
-  while ((match = OPERATOR_REGEX.exec(line)) !== null) {
+  while ((match = TOKEN_REGEX.exec(line)) !== null) {
     if (match.index > lastIndex) {
       tokens.push({
         text: line.slice(lastIndex, match.index),
       });
     }
-    tokens.push({ text: match[0], className: operatorClass(match[0]) });
-    lastIndex = match.index + match[0].length;
+
+    const token = match[0];
+    tokens.push({ text: token, className: tokenClass(token) });
+    lastIndex = match.index + token.length;
   }
 
   if (lastIndex < line.length) {
