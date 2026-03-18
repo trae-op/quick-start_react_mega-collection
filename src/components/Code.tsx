@@ -88,9 +88,9 @@ export default function Code({ code, inline }: CodeProps) {
   const lines = codeString.split("\n");
 
   const inlineClassName =
-    "rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-900 dark:bg-slate-900 dark:text-slate-100";
+    "rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-900 dark:bg-slate-900 dark:text-slate-100";
   const blockClassName =
-    "relative rounded bg-slate-100 p-3 font-mono text-xs text-slate-900 dark:bg-slate-800 dark:text-slate-100 overflow-x-auto";
+    "relative rounded bg-slate-100 p-3 font-mono text-[10px] text-slate-900 dark:bg-slate-800 dark:text-slate-100 overflow-x-auto";
 
   const lineElements = lines.map((line, lineIndex) => (
     <div key={lineIndex} className="whitespace-pre">
