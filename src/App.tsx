@@ -3,6 +3,7 @@ import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import FilterPage from "./routes/FilterPage";
 import FilterNestedPage from "./routes/FilterNestedPage";
 import FilterRemovePage from "./routes/FilterRemovePage";
+import DeletePage from "./routes/DeletePage";
 import MergePage from "./routes/MergePage";
 import MergeNestedPage from "./routes/MergeNestedPage";
 import SearchPage from "./routes/SearchPage";
@@ -36,6 +37,7 @@ const NAV_ITEMS: TNavItem[] = [
   { to: "/search-nested", label: "Search Nested" },
   { to: "/filter-nested", label: "Filter Nested" },
   { to: "/merge-nested", label: "Merge Nested" },
+  { to: "/filter-delete", label: "Filter Delete" },
   { to: "/add", label: "Add" },
   { to: "/update", label: "Update" },
   { to: "/delete", label: "Delete" },
@@ -132,7 +134,8 @@ const AppRoutes = memo(() => (
     <Route path="/search" element={<SearchPage />} />
     <Route path="/search-nested" element={<SearchNestedPage />} />
     <Route path="/filter" element={<FilterPage />} />
-    <Route path="/delete" element={<FilterRemovePage />} />
+    <Route path="/filter-delete" element={<FilterRemovePage />} />
+    <Route path="/delete" element={<DeletePage />} />
     <Route path="/filter-nested" element={<FilterNestedPage />} />
     <Route path="/sort" element={<SortPage />} />
     <Route path="/merge" element={<MergePage />} />

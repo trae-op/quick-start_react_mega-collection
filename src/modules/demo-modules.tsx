@@ -161,10 +161,9 @@ async function buildDemoModules(): Promise<DemoModulesSnapshot> {
   });
 
   const filterMutableExclude = new FilterEngine<User>({
-    data: users,
-    fields: ["id", "city", "age"],
+    data: users.slice(),
+    fields: ["id"],
     filterByPreviousResult: true,
-    mutableExcludeField: "id",
   });
 
   const filterNested = new FilterEngine<UserWithOrders>({

@@ -1,11 +1,11 @@
-import { startTransition, useDeferredValue, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { List, type RowComponentProps } from "react-window";
 import { AutoSizer } from "react-virtualized-auto-sizer";
 import PageHeader from "../components/PageHeader";
 import Code from "../components/Code";
 import ShowingCount from "../components/ShowingCount";
 import type { User } from "../data/users";
-import { useDemoData, useDemoEngine } from "../modules/demo-modules";
+import { useDemoEngine } from "../modules/demo-modules";
 
 const ROW_HEIGHT = 84;
 
@@ -55,24 +55,14 @@ function RemovableUserRow({
   );
 }
 
-function FilterRemovePage() {
+function DeletePage() {
   const engine = useDemoEngine("filterMutableExclude");
-  const users = useDemoData("users");
+  const [dataVersion, setDataVersion] = useState(0);
   const [checkedIds, setCheckedIds] = useState<number[]>([]);
-  const [removedIds, setRemovedIds] = useState<number[]>([]);
 
-  const deferredRemovedIds = useDeferredValue(removedIds);
-
-  const result = useMemo(() => {
-    if (deferredRemovedIds.length === 0) {
-      return users;
-    }
-
-    return engine.filter([{ field: "id", exclude: deferredRemovedIds }]);
-  }, [deferredRemovedIds, engine, users]);
+  const result = useMemo(() => engine.getOriginData(), [engine, dataVersion]);
 
   const checkedIdSet = useMemo(() => new Set(checkedIds), [checkedIds]);
-  const isPending = deferredRemovedIds !== removedIds;
 
   const toggleChecked = (id: number) => {
     setCheckedIds((prev) =>
@@ -85,26 +75,14 @@ function FilterRemovePage() {
       return;
     }
 
-    startTransition(() => {
-      setRemovedIds((prev) => {
-        const nextIds = new Set(prev);
+    engine.delete("id", checkedIds);
 
-        for (const id of checkedIds) {
-          nextIds.add(id);
-        }
-
-        return [...nextIds];
-      });
-
-      setCheckedIds([]);
-    });
+    setDataVersion((current) => current + 1);
+    setCheckedIds([]);
   };
 
   const resetRemoved = () => {
-    startTransition(() => {
-      setCheckedIds([]);
-      setRemovedIds([]);
-    });
+    setCheckedIds([]);
   };
 
   return (
@@ -113,19 +91,20 @@ function FilterRemovePage() {
         title="Filter Remove"
         description={
           <>
-            Filter delete checked users via <strong>FilterEngine</strong>.
+            Delete checked users from origin data via{" "}
+            <strong>FilterEngine</strong>.
             <br />
             <Code
               code={`
 import { FilterEngine } from "@devisfuture/mega-collection/filter";
 ...
 const filterMutableExclude = new FilterEngine<User>({
-  data: users.slice(),
-  fields: ["id"],
-  filterByPreviousResult: true,
+  data: users,
+  fields: ["id", "city", "age"],
+  filterByPreviousResult: true
 });
 ...
-engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
+filterMutableExclude.delete("id", [1, 4]);`}
             />
           </>
         }
@@ -158,9 +137,7 @@ engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
         </div>
       ) : (
         <div
-          className={`mt-4 h-[calc(100vh-300px)] rounded-lg border border-slate-700 bg-slate-950 p-2 ${
-            isPending ? "opacity-30 transition-opacity" : ""
-          }`}
+          className={`mt-4 h-[calc(100vh-300px)] rounded-lg border border-slate-700 bg-slate-950 p-2 `}
         >
           <AutoSizer
             renderProp={({ height, width }) => {
@@ -190,4 +167,4 @@ engine.filter([{ field: "id", exclude: [1, 2, 3] }]);`}
   );
 }
 
-export default FilterRemovePage;
+export default DeletePage;
